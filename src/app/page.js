@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <Image
-        src="/logo.svg"
+        src="https://ik.imagekit.io/5s5n2ob6a/Gambar%20WhatsApp%202025-04-13%20pukul%2021.56.39_c84b1b21.jpg?updatedAt=1744556242524"
         alt="Logo"
         width={100}
         height={100}
