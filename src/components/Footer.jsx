@@ -14,7 +14,12 @@ function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="size-8 bg-primary p-1 rounded-md flex items-center justify-center">
-                <Image src={images.artisanSyncLogo} />
+                <Image
+                  src={images.artisanSyncLogo}
+                  alt="Artisan Sync Logo"
+                  width={50}
+                  height={50}
+                />
               </div>
               <span className="font-bold text-lg tracking-tight">
                 ArtisanSync
