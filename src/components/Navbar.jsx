@@ -1,4 +1,6 @@
 import Link from "next/link";
+import artisanSyncLogo from "../../public/artisan-logo.svg";
+import Image from "next/image";
 
 function Navbar() {
   return (
@@ -6,7 +8,12 @@ function Navbar() {
       <div className="fixed top-0 left-0 right-0 z-20">
         <div className="flex justify-between mx-[88px] my-[14.51px]">
           <div className="flex items-center gap-[32px]">
-            <img src="artisan-logo.svg" alt="" />
+            <Image
+              src={artisanSyncLogo}
+              alt="Artisan Sync Logo"
+              width={50}
+              height={50}
+            />
             <p className="text-[12px] ">ARTISAN SYNC</p>
           </div>
 
