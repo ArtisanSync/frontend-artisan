@@ -1,7 +1,7 @@
 export const team = [
   {
     id: 1,
-    name: "Wahyu",
+    name: "Ginting",
     position: "Backend Developer",
     image: "wahyuProfile",
   },
