@@ -23,4 +23,10 @@ export const team = [
     position: "Fullstack Developer",
     image: "yogiProfile",
   },
+  {
+    id: 5,
+    name: "Tegar Ginting",
+    position: "Fullstack Developer",
+    image: "wahyuProfile",
+  },
 ];
