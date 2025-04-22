@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
+import TeamSection from "@/components/TeamSection";
 
 const Home = () => {
   return (
@@ -9,6 +10,8 @@ const Home = () => {
         <h1>TEST H! NIH</h1>
         <Button>Artisan cihuyy</Button>
         <Button>TEST</Button>
+
+        <TeamSection />
 
         <p className="mt-[400px]">test scroll</p>
         <p className="mt-[400px]">test scroll</p>
