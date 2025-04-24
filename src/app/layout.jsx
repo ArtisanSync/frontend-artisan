@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} antialiased min-h-screen flex flex-col`}
+        className={`${poppins.variable} antialiased min-h-screen flex flex-col bg-[#10101E]`}
       >
         <div className="flex-grow">{children}</div>
         <Footer />

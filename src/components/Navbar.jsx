@@ -14,23 +14,38 @@ function Navbar() {
               width={50}
               height={50}
             />
-            <p className="text-[12px] ">ARTISAN SYNC</p>
+            <p className="text-[12px] text-[#FFFFFF]">ARTISAN SYNC</p>
           </div>
 
           <div className="flex gap-[55px] items-center">
-            <Link href="" className="text-[12px] hover:text-blue-600">
+            <Link
+              href=""
+              className="text-[12px] text-[#FFFFFF] hover:text-blue-600"
+            >
               ABOUT US
             </Link>
-            <Link href="" className="text-[12px] hover:text-blue-600">
+            <Link
+              href=""
+              className="text-[12px] text-[#FFFFFF] hover:text-blue-600"
+            >
               SERVICE
             </Link>
-            <Link href="" className="text-[12px] hover:text-blue-600">
+            <Link
+              href=""
+              className="text-[12px] text-[#FFFFFF] hover:text-blue-600"
+            >
               PROJECT
             </Link>
-            <Link href="" className="text-[12px] hover:text-blue-600">
+            <Link
+              href=""
+              className="text-[12px] text-[#FFFFFF] hover:text-blue-600"
+            >
               TEAM
             </Link>
-            <Link href="" className="text-[12px] hover:text-blue-600">
+            <Link
+              href=""
+              className="text-[12px] text-[#FFFFFF] hover:text-blue-600"
+            >
               CONTACT US
             </Link>
           </div>
