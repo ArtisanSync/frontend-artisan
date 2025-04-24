@@ -8,20 +8,20 @@ import { Badge } from "@/components/ui/badge";
 
 const TeamSection = () => {
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background to-muted/30">
+    <section className="w-full py-12 sm:py-16 md:py-20  from-background to-muted/30 bg-[#10101E]">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-3 text-center mb-10 sm:mb-16">
           <Badge
             variant="outline"
-            className="px-4 py-1 text-sm rounded-full border-primary/30"
+            className="px-4 py-1 text-sm rounded-full border-primary/30 text-white"
           >
             Our Experts
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-white">
             Meet Our Team
           </h2>
           <div className="w-16 h-1 bg-primary rounded-full my-3"></div>
-          <p className="max-w-[600px] text-muted-foreground text-base sm:text-lg">
+          <p className="max-w-[600px]text-base sm:text-lg text-white">
             Talented professionals building exceptional experiences
           </p>
         </div>
