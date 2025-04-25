@@ -1,15 +1,14 @@
 import { Button } from "./ui/button";
+import Image from "next/image";
+import LeftBanner from "../../public/left-banner.svg";
+import RightBanner from "../../public/right-banner.svg";
 
 function Hero() {
   return (
     <>
       <div className="relative w-full overflow-hidden">
-        <img
-          className="float-left mt-[112.56px]"
-          src="left-banner.svg"
-          alt=""
-        />
-        <img className="float-right" src="/right-banner.svg" alt="" />
+        <Image className="float-left mt-[112.56px]" src={LeftBanner} alt="" />
+        <Image className="float-right" src={RightBanner} alt="" />
       </div>
 
       <div className="absolute inset-0 z-1">

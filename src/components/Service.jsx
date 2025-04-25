@@ -1,5 +1,3 @@
-// components/Service.js
-
 function Service() {
   return (
     <section className=" text-white">
@@ -50,35 +48,5 @@ function Service() {
     </section>
   );
 }
-
-// function Service() {
-//   return (
-//     <>
-//       <div>
-//         <div className="flex justify-center">
-//           <p className="font-bold text-[32px] text-[#2563EB]">
-//             WHAT CAN WE DO FOR YOU
-//           </p>
-//         </div>
-//         <div className="ml-[126px]">
-//           <div className="grid grid-cols-4">
-//             <p className="text-[40px] font-bold text-white text-center">
-//               Our <br /> Services
-//             </p>
-//             <div>
-//               <p>ini buat cardnya</p>
-//             </div>
-//             <div>
-//               <p>ini buat cardnya</p>
-//             </div>
-//             <div>
-//               <p>ini buat cardnya</p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
 
 export default Service;
