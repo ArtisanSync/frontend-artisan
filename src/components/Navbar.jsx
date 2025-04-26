@@ -17,25 +17,50 @@ import { Menu, X } from "lucide-react";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState("/");
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-    };
 
-    setActiveLink(window.location.pathname);
+      const sections = ["hero", "service", "team"];
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (!element) return false;
+
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom >= 100;
+      });
+
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const yOffset = -80;
+      const y =
+        section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+      setActiveSection(sectionId);
+    }
+  };
+
   const navLinks = [
-    { href: "/about", label: "ABOUT US" },
-    { href: "/services", label: "SERVICES" },
-    { href: "/projects", label: "PROJECTS" },
-    { href: "/team", label: "TEAM" },
-    { href: "/contact", label: "CONTACT" },
+    { id: "hero", label: "ABOUT US" },
+    { id: "service", label: "SERVICES" },
+    { id: "hero", label: "PROJECTS" },
+    { id: "team", label: "TEAM" },
+    { id: "hero", label: "CONTACT" },
   ];
 
   return (
@@ -64,11 +89,11 @@ function Navbar() {
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link
+            <button
               key={link.label}
-              href={link.href}
+              onClick={() => scrollToSection(link.id)}
               className={`relative text-xs font-medium transition-colors py-1 group ${
-                activeLink === link.href
+                activeSection === link.id
                   ? "text-[#5ffbf1]"
                   : "text-white hover:text-[#5ffbf1]"
               }`}
@@ -76,12 +101,12 @@ function Navbar() {
               {link.label}
               <span
                 className={`absolute left-0 right-0 bottom-0 h-0.5 bg-[#5ffbf1] transition-transform duration-300 origin-left ${
-                  activeLink === link.href
+                  activeSection === link.id
                     ? "scale-x-100"
                     : "scale-x-0 group-hover:scale-x-100"
                 }`}
               ></span>
-            </Link>
+            </button>
           ))}
         </nav>
 
@@ -131,16 +156,16 @@ function Navbar() {
             <nav className="flex flex-col px-6 py-6 space-y-6">
               {navLinks.map((link) => (
                 <SheetClose asChild key={link.label}>
-                  <Link
-                    href={link.href}
-                    className={`text-sm font-medium transition-colors ${
-                      activeLink === link.href
+                  <button
+                    onClick={() => scrollToSection(link.id)}
+                    className={`text-sm font-medium transition-colors text-left ${
+                      activeSection === link.id
                         ? "text-[#5ffbf1]"
                         : "text-white hover:text-[#5ffbf1]"
                     }`}
                   >
                     {link.label}
-                  </Link>
+                  </button>
                 </SheetClose>
               ))}
             </nav>

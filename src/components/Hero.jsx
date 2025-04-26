@@ -5,7 +5,10 @@ import RightBanner from "../../public/right-banner.svg";
 
 function Hero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden pt-16">
+    <section
+      className="relative min-h-screen w-full overflow-hidden pt-16"
+      id="hero"
+    >
       <div className="relative w-full">
         <div className="hidden sm:block">
           <Image

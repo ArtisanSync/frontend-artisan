@@ -8,7 +8,10 @@ import { Badge } from "@/components/ui/badge";
 
 const TeamSection = () => {
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20  from-background to-muted/30 bg-[#10101E]">
+    <section
+      id="team"
+      className="w-full py-12 sm:py-16 md:py-20  from-background to-muted/30 bg-[#10101E]"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-3 text-center mb-10 sm:mb-16">
           <Badge

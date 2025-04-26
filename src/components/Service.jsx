@@ -20,7 +20,7 @@ function Service() {
   ];
 
   return (
-    <section className="text-white pt-4 sm:pt-6 md:pt-8">
+    <section className="text-white pt-4 sm:pt-6 md:pt-8" id="service">
       <div className="px-4 sm:px-6 lg:px-8 xl:ml-[126px] xl:mr-[83px] mx-auto">
         <div className="text-center mb-8 sm:mb-10">
           <h2 className="text-[#2563EB] text-2xl md:text-[32px] font-bold">
