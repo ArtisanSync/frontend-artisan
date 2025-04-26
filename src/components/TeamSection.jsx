@@ -30,7 +30,7 @@ const TeamSection = () => {
           {team.map((member) => (
             <Card
               key={member.id}
-              className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-2xl backdrop-blur-sm bg-card/95"
+              className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-2xl backdrop-blur-sm bg-card/95 py-0"
             >
               <div className="flex flex-col h-full">
                 <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl">
