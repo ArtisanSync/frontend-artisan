@@ -2,15 +2,13 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { team } from "@/constants/people";
 import { images } from "@/constants/images";
-import { Button } from "@/components/ui/button";
-import { Linkedin, Mail, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const TeamSection = () => {
   return (
     <section
       id="team"
-      className="w-full py-12 sm:py-16 md:py-20  from-background to-muted/30 bg-[#10101E]"
+      className="w-full py-12 sm:py-16 md:py-20 from-background to-muted/30 bg-[#10101E]"
     >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-3 text-center mb-10 sm:mb-16">
@@ -61,38 +59,10 @@ const TeamSection = () => {
                       {member.position}
                     </CardDescription>
                     <div className="h-0.5 w-12 bg-primary/40 my-3 rounded-full"></div>
-                    <p className="text-muted-foreground text-sm mt-3 line-clamp-3">
+                    <p className="text-muted-foreground text-sm mt-3">
                       Specializing in creating innovative solutions with a
                       passion for clean code and seamless user experiences.
                     </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 mt-6">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="rounded-full h-9 w-9 hover:bg-primary hover:text-white transition-colors"
-                      aria-label="LinkedIn profile"
-                    >
-                      <Linkedin className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="rounded-full h-9 w-9 hover:bg-primary hover:text-white transition-colors"
-                      aria-label="Email contact"
-                    >
-                      <Mail className="h-4 w-4" />
-                    </Button>
-                    <div className="ml-auto">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="rounded-full gap-1.5 px-3 border-primary/20 hover:border-primary hover:bg-primary/10"
-                      >
-                        Profile <ExternalLink className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
                   </div>
                 </CardContent>
               </div>

@@ -6,83 +6,69 @@ import {
 } from "@/components/ui/accordion";
 import {
   Code,
+  Layout,
   PaintBucket,
-  ShoppingBag,
   Globe,
-  Smartphone,
-  Wrench,
+  Database,
+  Monitor,
 } from "lucide-react";
 
 export default function ServicesAccordion() {
   const services = [
     {
-      id: "website-development",
-      title: "Website Development",
-      icon: <Globe className="h-5 w-5 text-blue-500" />,
+      id: "frontend-development",
+      title: "Frontend Development",
+      icon: <Layout className="h-5 w-5 text-blue-500" />,
       description:
-        "Professional, responsive websites built with the latest technologies. From simple landing pages to complex web applications, we deliver pixel-perfect solutions tailored to your business needs.",
+        "Modern, responsive interfaces built with React, Next.js, and other cutting-edge frontend technologies. We create beautiful, performant user interfaces that work across all devices.",
       features: [
-        "Custom designs",
-        "Responsive layouts",
-        "SEO optimization",
-        "High performance",
-        "Content management systems",
-      ],
-    },
-    {
-      id: "e-commerce",
-      title: "E-Commerce Solutions",
-      icon: <ShoppingBag className="h-5 w-5 text-emerald-500" />,
-      description:
-        "Complete online store development with secure payment gateways, product management, and inventory systems. Transform your business with our scalable e-commerce solutions.",
-      features: [
-        "Product catalog",
-        "Payment integration",
-        "Shopping cart system",
-        "Order management",
-        "Customer accounts",
-      ],
-    },
-    {
-      id: "ui-design",
-      title: "UI/UX Design Services",
-      icon: <PaintBucket className="h-5 w-5 text-rose-500" />,
-      description:
-        "User-centered design that delights your audience. We create intuitive interfaces and seamless user experiences that convert visitors into loyal customers.",
-      features: [
-        "User research",
-        "Wireframing",
-        "Prototyping",
-        "Visual design",
-        "Usability testing",
-      ],
-    },
-    {
-      id: "web-maintenance",
-      title: "Website Maintenance & Support",
-      icon: <Wrench className="h-5 w-5 text-amber-500" />,
-      description:
-        "Ongoing support and maintenance to keep your digital products running smoothly. Regular updates, security patches, and performance optimization to protect your investment.",
-      features: [
-        "Regular updates",
-        "Security monitoring",
+        "Responsive design",
+        "Interactive UIs",
         "Performance optimization",
-        "Content updates",
-        "Technical support",
+        "Cross-browser compatibility",
+        "State management",
       ],
     },
     {
-      id: "custom-web-apps",
-      title: "Custom Web Applications",
-      icon: <Code className="h-5 w-5 text-indigo-500" />,
+      id: "backend-development",
+      title: "Backend Development",
+      icon: <Database className="h-5 w-5 text-emerald-500" />,
       description:
-        "Tailor-made web applications designed to solve your specific business challenges. From CRM systems to project management tools, we build solutions that streamline operations.",
+        "Robust server-side solutions using Node.js, Express, and other backend frameworks. We build secure, scalable APIs and services that power your web applications.",
       features: [
-        "Custom functionality",
-        "Integration with existing systems",
-        "Scalable architecture",
-        "Data analytics",
-        "Admin dashboards",
+        "API development",
+        "Database design",
+        "Authentication systems",
+        "Performance optimization",
+        "Security implementation",
+      ],
+    },
+    {
+      id: "full-stack-development",
+      title: "Full Stack Development",
+      icon: <Code className="h-5 w-5 text-purple-500" />,
+      description:
+        "End-to-end web development services combining both frontend and backend expertise. We handle everything from database design to user interface implementation.",
+      features: [
+        "Comprehensive solutions",
+        "Database architecture",
+        "API integration",
+        "Frontend implementation",
+        "DevOps setup",
+      ],
+    },
+    {
+      id: "web-optimization",
+      title: "Web Performance Optimization",
+      icon: <Monitor className="h-5 w-5 text-amber-500" />,
+      description:
+        "Speed up your website and improve user experience through advanced optimization techniques. We improve loading times, responsiveness, and overall performance.",
+      features: [
+        "Core Web Vitals improvement",
+        "Asset optimization",
+        "Code splitting",
+        "Lazy loading",
+        "Caching strategies",
       ],
     },
   ];
@@ -92,12 +78,12 @@ export default function ServicesAccordion() {
       <div className="container px-4 md:px-6 flex flex-col items-center">
         <div className="text-center mb-12 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Our <span className="text-blue-500">Services</span>
+            Web <span className="text-blue-500">Development Services</span>
           </h2>
           <div className="w-16 h-1 bg-blue-500 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-300">
-            Explore how ArtisanSync can transform your digital presence with our
-            comprehensive web development services
+            Discover our comprehensive web development expertise to bring your
+            digital vision to life
           </p>
         </div>
 

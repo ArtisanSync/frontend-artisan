@@ -68,30 +68,6 @@ function Footer() {
                   Web Development
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
-                >
-                  Mobile Apps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
-                >
-                  UI/UX Design
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
-                >
-                  Digital Marketing
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
