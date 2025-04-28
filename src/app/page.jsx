@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import FounderSection from "@/components/FounderSection";
 import Service from "@/components/Service";
 import ServicesAccordion from "@/components/ServicesAccordion";
+import ProjectCarousel from "@/components/ProjectCarousel";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Hero />
       <FounderSection />
       <Service />
+      <ProjectCarousel />
       <div className="p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <TeamSection />
       </div>
