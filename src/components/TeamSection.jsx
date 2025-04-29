@@ -22,7 +22,7 @@ const TeamSection = () => {
             Meet Our Team
           </h2>
           <div className="w-16 h-1 bg-primary rounded-full my-3"></div>
-          <p className="max-w-[600px]text-base sm:text-lg text-white">
+          <p className="max-w-[600px] text-base sm:text-lg text-white">
             Talented professionals building exceptional experiences
           </p>
         </div>
@@ -31,7 +31,7 @@ const TeamSection = () => {
           {team.map((member) => (
             <Card
               key={member.id}
-              className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-2xl backdrop-blur-sm bg-card/95 py-0"
+              className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
             >
               <div className="flex flex-col h-full">
                 <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl">
@@ -50,16 +50,16 @@ const TeamSection = () => {
                     </Badge>
                   </div>
                 </div>
-                <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-card rounded-b-2xl">
+                <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#161630] rounded-b-2xl">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-bold">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white">
                       {member.name}
                     </h3>
-                    <CardDescription className="text-sm sm:text-md font-medium text-primary hidden sm:block">
+                    <CardDescription className="text-sm sm:text-md font-medium text-white/55 hidden sm:block">
                       {member.position}
                     </CardDescription>
-                    <div className="h-0.5 w-12 bg-primary/40 my-3 rounded-full"></div>
-                    <p className="text-muted-foreground text-sm mt-3">
+                    <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
+                    <p className="text-gray-300 text-sm mt-3">
                       Specializing in creating innovative solutions with a
                       passion for clean code and seamless user experiences.
                     </p>
