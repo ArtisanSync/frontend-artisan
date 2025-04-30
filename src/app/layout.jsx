@@ -2,6 +2,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ScrollUpButton from "@/components/ui/scrollUpButton";
 import { Providers } from "@/providers/Providers";
 
 const poppins = Poppins({
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Navbar />
           <div className="flex-grow">{children}</div>
+          <ScrollUpButton />
           <Footer />
         </Providers>
       </body>
