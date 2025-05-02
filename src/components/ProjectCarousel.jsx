@@ -6,45 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    description:
-      "A modern e-commerce solution with React, Node.js and MongoDB, featuring real-time inventory management and seamless payment integration",
-    image:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1000&auto=format&fit=crop",
-    tags: ["React", "Node.js", "MongoDB"],
-  },
-  {
-    id: 2,
-    title: "Travel Booking App",
-    description:
-      "An intuitive travel booking platform with personalized recommendations and secure payment processing",
-    image:
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop",
-    tags: ["Next.js", "Express", "PostgreSQL"],
-  },
-  {
-    id: 3,
-    title: "AI Content Generator",
-    description:
-      "An AI-powered content generation tool that creates high-quality articles and marketing copy",
-    image:
-      "https://images.unsplash.com/photo-1677442135078-744696dae559?q=80&w=1000&auto=format&fit=crop",
-    tags: ["Python", "TensorFlow", "React"],
-  },
-  {
-    id: 4,
-    title: "Health & Fitness Tracker",
-    description:
-      "A comprehensive fitness tracking application with customizable workout plans and nutrition monitoring",
-    image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000&auto=format&fit=crop",
-    tags: ["React Native", "Firebase", "GraphQL"],
-  },
-];
+import { useProjects } from "@/hooks/use-projects";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProjectCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,13 +15,26 @@ export default function ProjectCarousel() {
   const [touchEnd, setTouchEnd] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
+  const { data, isLoading, isError, error } = useProjects();
+  // Ensure we're accessing the data property from the API response
+  const projects = data?.data || [];
+
+  // Add debugging to check what data is being received
+  useEffect(() => {
+    if (data) {
+      console.log("Projects data:", data);
+    }
+  }, [data]);
+
   const nextSlide = () => {
+    if (!projects.length) return;
     setCurrentIndex((prevIndex) =>
       prevIndex === projects.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
+    if (!projects.length) return;
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? projects.length - 1 : prevIndex - 1
     );
@@ -90,7 +66,7 @@ export default function ProjectCarousel() {
 
   useEffect(() => {
     let interval;
-    if (isAutoPlaying) {
+    if (isAutoPlaying && projects.length > 0) {
       interval = setInterval(() => {
         nextSlide();
       }, 5000);
@@ -101,7 +77,7 @@ export default function ProjectCarousel() {
         clearInterval(interval);
       }
     };
-  }, [currentIndex, isAutoPlaying]);
+  }, [currentIndex, isAutoPlaying, projects.length]);
 
   return (
     <section
@@ -126,91 +102,144 @@ export default function ProjectCarousel() {
         </div>
 
         <div className="relative w-full max-w-3xl mx-auto">
-          <div className="flex items-center justify-end mb-4 gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
-              onClick={prevSlide}
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
-              onClick={nextSlide}
-              aria-label="Next slide"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div>
-
-          <div className="overflow-hidden rounded-xl shadow-xl">
-            <div
-              className="flex transition-transform duration-500 ease-out h-[350px] md:h-[450px]"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {projects.map((project) => (
-                <div key={project.id} className="w-full flex-shrink-0 relative">
-                  <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
-                    <CardContent className="p-0">
-                      <div className="relative h-full">
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 800px"
-                          priority
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
-
-                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
-                          <div className="flex flex-wrap gap-2 mb-3 justify-center">
-                            {project.tags.map((tag) => (
-                              <Badge
-                                key={tag}
-                                className="bg-blue-500/80 text-white"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-
-                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                            {project.title}
-                          </h3>
-
-                          <p className="text-gray-300 mb-6 max-w-2xl">
-                            {project.description}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
+          {isError && (
+            <div className="flex flex-col items-center justify-center h-[350px] md:h-[450px] bg-gray-900/50 rounded-xl text-center p-6">
+              <p className="text-red-400 mb-2">Something went wrong</p>
+              <p className="text-gray-400 max-w-md">
+                {error?.message ||
+                  "Failed to load projects. Please try again later."}
+              </p>
             </div>
-          </div>
+          )}
 
-          <div className="flex justify-center gap-2 mt-6">
-            {projects.map((_, index) => (
-              <button
-                key={index}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? "w-8 bg-blue-500" : "w-2 bg-gray-600"
-                }`}
-                onClick={() => goToSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
+          {!isError && (
+            <>
+              <div className="flex items-center justify-end mb-4 gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
+                  onClick={prevSlide}
+                  aria-label="Previous slide"
+                  disabled={isLoading || projects.length <= 1}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
+                  onClick={nextSlide}
+                  aria-label="Next slide"
+                  disabled={isLoading || projects.length <= 1}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="overflow-hidden rounded-xl shadow-xl">
+                {isLoading ? (
+                  <div className="h-[350px] md:h-[450px]">
+                    <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
+                      <CardContent className="p-0 h-full">
+                        <div className="flex flex-col items-center justify-center h-full">
+                          <Skeleton className="w-full h-full absolute" />
+                          <div className="z-10 flex flex-col items-center p-6 md:p-8">
+                            <div className="flex gap-2 mb-3">
+                              <Skeleton className="h-6 w-16 rounded-full" />
+                              <Skeleton className="h-6 w-20 rounded-full" />
+                            </div>
+                            <Skeleton className="h-8 w-48 mb-2" />
+                            <Skeleton className="h-4 w-64 mb-1" />
+                            <Skeleton className="h-4 w-56 mb-1" />
+                            <Skeleton className="h-4 w-60" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <div
+                    className="flex transition-transform duration-500 ease-out h-[350px] md:h-[450px]"
+                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                  >
+                    {projects.length > 0 ? (
+                      projects.map((project) => (
+                        <div
+                          key={project._id}
+                          className="w-full flex-shrink-0 relative"
+                        >
+                          <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
+                            <CardContent className="p-0">
+                              <div className="relative h-full">
+                                {project.image && (
+                                  <Image
+                                    src={project.image}
+                                    alt={project.title || "Project"}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 800px"
+                                    priority
+                                    unoptimized={true}
+                                  />
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+
+                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
+                                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                    {project.title || "Untitled Project"}
+                                  </h3>
+                                  <p className="text-gray-300 mb-6 max-w-2xl">
+                                    {project.description ||
+                                      "No description available"}
+                                  </p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="w-full flex-shrink-0 relative">
+                        <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
+                          <CardContent className="p-0">
+                            <div className="relative h-full flex items-center justify-center">
+                              <div className="absolute inset-0 bg-gray-800"></div>
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                              <p className="text-white z-10">
+                                No projects available
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {!isLoading && projects.length > 1 && (
+                <div className="flex justify-center gap-2 mt-6">
+                  {projects.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`h-2 rounded-full transition-all ${
+                        index === currentIndex
+                          ? "w-8 bg-blue-500"
+                          : "w-2 bg-gray-600"
+                      }`}
+                      onClick={() => goToSlide(index)}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </section>
