@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,15 +15,7 @@ export default function ProjectCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const { data, isLoading, isError, error } = useProjects();
-  // Ensure we're accessing the data property from the API response
   const projects = data?.data || [];
-
-  // Add debugging to check what data is being received
-  useEffect(() => {
-    if (data) {
-      console.log("Projects data:", data);
-    }
-  }, [data]);
 
   const nextSlide = () => {
     if (!projects.length) return;
@@ -140,24 +131,20 @@ export default function ProjectCarousel() {
 
               <div className="overflow-hidden rounded-xl shadow-xl">
                 {isLoading ? (
-                  <div className="h-[350px] md:h-[450px]">
-                    <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
-                      <CardContent className="p-0 h-full">
-                        <div className="flex flex-col items-center justify-center h-full">
-                          <Skeleton className="w-full h-full absolute" />
-                          <div className="z-10 flex flex-col items-center p-6 md:p-8">
-                            <div className="flex gap-2 mb-3">
-                              <Skeleton className="h-6 w-16 rounded-full" />
-                              <Skeleton className="h-6 w-20 rounded-full" />
-                            </div>
-                            <Skeleton className="h-8 w-48 mb-2" />
-                            <Skeleton className="h-4 w-64 mb-1" />
-                            <Skeleton className="h-4 w-56 mb-1" />
-                            <Skeleton className="h-4 w-60" />
-                          </div>
+                  <div className="h-[350px] md:h-[450px] bg-gray-800 rounded-xl overflow-hidden">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <Skeleton className="w-full h-full absolute" />
+                      <div className="z-10 flex flex-col items-center p-6 md:p-8">
+                        <div className="flex gap-2 mb-3">
+                          <Skeleton className="h-6 w-16 rounded-full" />
+                          <Skeleton className="h-6 w-20 rounded-full" />
                         </div>
-                      </CardContent>
-                    </Card>
+                        <Skeleton className="h-8 w-48 mb-2" />
+                        <Skeleton className="h-4 w-64 mb-1" />
+                        <Skeleton className="h-4 w-56 mb-1" />
+                        <Skeleton className="h-4 w-60" />
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -167,62 +154,59 @@ export default function ProjectCarousel() {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                   >
-                    {projects.length > 0 ? (
+                    {projects && projects.length > 0 ? (
                       projects.map((project) => (
                         <div
                           key={project._id}
-                          className="w-full flex-shrink-0 relative"
+                          className="w-full flex-shrink-0 relative rounded-xl overflow-hidden shadow-lg"
                         >
-                          <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
-                            <CardContent className="p-0">
-                              <div className="relative h-full">
-                                {project.image && (
-                                  <Image
-                                    src={project.image}
-                                    alt={project.title || "Project"}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 100vw, 800px"
-                                    priority
-                                    unoptimized={true}
-                                  />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
-
-                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
-                                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                                    {project.title || "Untitled Project"}
-                                  </h3>
-                                  <p className="text-gray-300 mb-6 max-w-2xl">
-                                    {project.description ||
-                                      "No description available"}
-                                  </p>
-                                </div>
+                          <div className="relative h-full">
+                            {project.image && (
+                              <div className="absolute inset-0">
+                                <Image
+                                  src={project.image}
+                                  alt={project.title || "Project"}
+                                  fill
+                                  className="object-cover w-full h-full"
+                                  priority={true}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+                                  unoptimized={true}
+                                  style={{
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                  }}
+                                />
                               </div>
-                            </CardContent>
-                          </Card>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+
+                            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
+                              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                {project.title || "Untitled Project"}
+                              </h3>
+                              <p className="text-gray-300 mb-6 max-w-2xl">
+                                {project.description ||
+                                  "No description available"}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       ))
                     ) : (
-                      <div className="w-full flex-shrink-0 relative">
-                        <Card className="h-full overflow-hidden border-none shadow-lg rounded-xl mx-auto">
-                          <CardContent className="p-0">
-                            <div className="relative h-full flex items-center justify-center">
-                              <div className="absolute inset-0 bg-gray-800"></div>
-                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
-                              <p className="text-white z-10">
-                                No projects available
-                              </p>
-                            </div>
-                          </CardContent>
-                        </Card>
+                      <div className="w-full flex-shrink-0 relative rounded-xl overflow-hidden shadow-lg bg-gray-800">
+                        <div className="relative h-full flex items-center justify-center">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                          <p className="text-white z-10">
+                            No projects available
+                          </p>
+                        </div>
                       </div>
                     )}
                   </div>
                 )}
               </div>
 
-              {!isLoading && projects.length > 1 && (
+              {!isLoading && projects && projects.length > 1 && (
                 <div className="flex justify-center gap-2 mt-6">
                   {projects.map((_, index) => (
                     <button

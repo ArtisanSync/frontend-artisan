@@ -18,7 +18,7 @@ const FounderSection = () => {
             </Badge>
 
             <h2 className="text-4xl py-4 md:text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Yogi...
+              Yogi Efani Yancandra
             </h2>
 
             <div className="space-y-4">
