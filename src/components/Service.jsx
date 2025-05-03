@@ -1,23 +1,10 @@
+"use client";
+
 import { Card, CardContent } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
-import { Suspense } from "react";
-
-async function getServices() {
-  try {
-    const baseURL = process.env.NEXT_PUBLIC_API_URL;
-    const res = await fetch(`${baseURL}/services`, { cache: "no-store" });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch services");
-    }
-
-    const data = await res.json();
-    return data.data;
-  } catch (error) {
-    console.error("Error loading services:", error);
-    return [];
-  }
-}
+import { useServices } from "@/hooks/use-services";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { Button } from "./ui/button";
 
 function ServiceSkeleton() {
   return (
@@ -32,8 +19,10 @@ function ServiceSkeleton() {
   );
 }
 
-async function ServiceList() {
-  const services = await getServices();
+function ServiceList({ services }) {
+  if (!services || services.length === 0) {
+    return <p className="text-gray-400">No services available.</p>;
+  }
 
   return (
     <>
@@ -59,7 +48,33 @@ async function ServiceList() {
   );
 }
 
+function ErrorDisplay({ refetch }) {
+  return (
+    <Card className="bg-black/60 border-none rounded-xl shadow-lg col-span-3">
+      <CardContent className="py-[30px] px-[24px] flex flex-col items-center">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h4 className="text-xl font-semibold text-white mb-2">
+          Failed to load services
+        </h4>
+        <p className="text-[16px] leading-relaxed text-gray-300 mb-6 text-center">
+          There was a problem loading the services. Please try again.
+        </p>
+        <Button
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => refetch()}
+        >
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Try Again
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Service() {
+  const { data, isLoading, isError, refetch } = useServices();
+  const services = data?.data || [];
+
   return (
     <section className="text-white pt-4 sm:pt-6 md:pt-8" id="service">
       <div className="px-4 sm:px-6 lg:px-8 xl:ml-[126px] xl:mr-[83px] mx-auto">
@@ -79,17 +94,17 @@ export default function Service() {
             </h3>
           </div>
 
-          <Suspense
-            fallback={
-              <>
-                <ServiceSkeleton />
-                <ServiceSkeleton />
-                <ServiceSkeleton />
-              </>
-            }
-          >
-            <ServiceList />
-          </Suspense>
+          {isLoading ? (
+            <>
+              <ServiceSkeleton />
+              <ServiceSkeleton />
+              <ServiceSkeleton />
+            </>
+          ) : isError ? (
+            <ErrorDisplay refetch={refetch} />
+          ) : (
+            <ServiceList services={services} />
+          )}
         </div>
       </div>
     </section>
