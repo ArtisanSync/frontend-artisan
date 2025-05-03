@@ -22,7 +22,7 @@ export default function ResetPasswordModal({ isOpen, onClose }) {
       case "password":
         return <NewPasswordForm />;
       case "success":
-        return <ResetSuccessView />;
+        return <ResetSuccessView onClose={onClose} />;
       default:
         return <ForgotPasswordForm />;
     }
@@ -45,7 +45,7 @@ export default function ResetPasswordModal({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-black/90 text-white border-white/10 p-6 sm:max-w-md backdrop-blur-lg">
+      <DialogContent className="bg-black/90 text-white border-white/10 p-6 sm:max-w-md backdrop-blur-lg fixed z-50">
         <DialogTitle className="text-xl font-semibold text-center mb-4">
           {getDialogTitle()}
         </DialogTitle>
