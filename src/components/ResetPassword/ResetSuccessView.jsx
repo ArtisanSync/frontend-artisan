@@ -2,8 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 
-export default function ResetSuccessView() {
+export default function ResetSuccessView({ onClose }) {
   const { resetState } = useAuth();
+
+  const handleBackToSignIn = () => {
+    resetState();
+    onClose();
+  };
 
   return (
     <div className="text-center space-y-4">
@@ -21,7 +26,7 @@ export default function ResetSuccessView() {
       </p>
 
       <Button
-        onClick={resetState}
+        onClick={handleBackToSignIn}
         className="mt-4 bg-blue-600 hover:bg-blue-700 text-white"
       >
         Back to Sign In
