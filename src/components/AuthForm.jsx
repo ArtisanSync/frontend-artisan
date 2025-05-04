@@ -16,6 +16,7 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const { login, auth } = useAuth();
 
@@ -24,10 +25,13 @@ export default function AuthForm() {
 
     if (email.trim() && password.trim()) {
       try {
+        setIsLoggingIn(true);
         await login(email, password);
         router.push("/admin/dashboard");
       } catch (error) {
         console.error("Login error:", error);
+      } finally {
+        setIsLoggingIn(false);
       }
     }
   };
@@ -105,9 +109,9 @@ export default function AuthForm() {
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              disabled={auth.isLoading}
+              disabled={isLoggingIn}
             >
-              {auth.isLoading ? (
+              {isLoggingIn ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
                   wait...
