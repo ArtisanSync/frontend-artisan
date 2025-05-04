@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthService } from "@/services/auth.service";
 import Cookies from "js-cookie";
@@ -9,11 +9,34 @@ import {
   setLoading,
   setError,
   setSuccess,
+  loginSuccess,
+  logoutSuccess,
 } from "@/features/auth/auth.slice";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }) => AuthService.login(email, password),
+    onMutate: () => {
+      dispatch(setLoading(true));
+      dispatch(clearAuthError());
+    },
+    onSuccess: (data, variables) => {
+      Cookies.set("token", data.token, { expires: 30 });
+      dispatch(
+        loginSuccess({
+          token: data.token,
+          user: { email: variables.email },
+        })
+      );
+    },
+    onError: (error) => {
+      dispatch(setError(error.response?.data || { message: error.message }));
+    },
+  });
 
   const forgotPasswordMutation = useMutation({
     mutationFn: (email) => AuthService.forgotPassword(email),
@@ -22,7 +45,6 @@ export const useAuth = () => {
       dispatch(clearAuthError());
     },
     onSuccess: (data) => {
-      // Store email directly from input rather than relying on response
       Cookies.set("resetEmail", data.email, { expires: 1 });
       dispatch(setSuccess({ success: true, message: data.message }));
       dispatch(setResetStep("otp"));
@@ -66,8 +88,17 @@ export const useAuth = () => {
     },
   });
 
+  const login = (email, password) => {
+    return loginMutation.mutateAsync({ email, password });
+  };
+
+  const logout = () => {
+    Cookies.remove("token");
+    dispatch(logoutSuccess());
+    queryClient.clear();
+  };
+
   const handleForgotPassword = (email) => {
-    // Store email in cookies immediately when the user submits form
     Cookies.set("resetEmail", email, { expires: 1 });
     return forgotPasswordMutation.mutateAsync(email);
   };
@@ -108,6 +139,8 @@ export const useAuth = () => {
 
   return {
     auth,
+    login,
+    logout,
     handleForgotPassword,
     handleVerifyOtp,
     handleResetPassword,
@@ -115,6 +148,7 @@ export const useAuth = () => {
     changeResetStep,
     clearError,
     isLoading:
+      loginMutation.isPending ||
       forgotPasswordMutation.isPending ||
       verifyOtpMutation.isPending ||
       resetPasswordMutation.isPending,

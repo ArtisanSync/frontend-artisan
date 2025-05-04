@@ -8,28 +8,31 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import ResetPasswordModal from "./ResetPassword/ResetPasswordModal";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function AuthForm() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const { login, auth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      router.push("/");
-    } catch (err) {
-      setError("Invalid login credentials. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (email.trim() && password.trim()) {
+      try {
+        setIsLoggingIn(true);
+        await login(email, password);
+        router.push("/admin/dashboard");
+      } catch (error) {
+        console.error("Login error:", error);
+      } finally {
+        setIsLoggingIn(false);
+      }
     }
   };
 
@@ -97,17 +100,18 @@ export default function AuthForm() {
                 Forgot password?
               </button>
             </div>
-            {error && (
+            {auth.error && (
               <div className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 p-3 rounded-md">
-                {error}
+                {auth.error.message ||
+                  "Invalid login credentials. Please try again."}
               </div>
             )}
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              disabled={isLoading}
+              disabled={isLoggingIn}
             >
-              {isLoading ? (
+              {isLoggingIn ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
                   wait...

@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  resetStep: "email", // 'email', 'otp', 'password', 'success'
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  resetStep: "email",
   isLoading: false,
   error: null,
   success: false,
@@ -37,6 +40,18 @@ const authSlice = createSlice({
       state.message = action.payload.message;
       state.isLoading = false;
     },
+    loginSuccess: (state, action) => {
+      state.isAuthenticated = true;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+      state.isLoading = false;
+      state.error = null;
+    },
+    logoutSuccess: (state) => {
+      state.isAuthenticated = false;
+      state.token = null;
+      state.user = null;
+    },
   },
 });
 
@@ -47,6 +62,8 @@ export const {
   setLoading,
   setError,
   setSuccess,
+  loginSuccess,
+  logoutSuccess,
 } = authSlice.actions;
 
 export default authSlice.reducer;
