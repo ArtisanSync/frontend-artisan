@@ -13,28 +13,48 @@ export default function ProjectCarousel() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [transitioning, setTransitioning] = useState(false);
 
   const { data, isLoading, isError, error } = useProjects();
   const projects = data?.data || [];
 
   const nextSlide = () => {
-    if (!projects.length) return;
+    if (!projects.length || transitioning) return;
+
+    setTransitioning(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === projects.length - 1 ? 0 : prevIndex + 1
     );
+
+    setTimeout(() => {
+      setTransitioning(false);
+    }, 300);
   };
 
   const prevSlide = () => {
-    if (!projects.length) return;
+    if (!projects.length || transitioning) return;
+
+    setTransitioning(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? projects.length - 1 : prevIndex - 1
     );
+
+    setTimeout(() => {
+      setTransitioning(false);
+    }, 300);
   };
 
   const goToSlide = (index) => {
+    if (transitioning) return;
+
+    setTransitioning(true);
     setCurrentIndex(index);
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 5000);
+
+    setTimeout(() => {
+      setTransitioning(false);
+      setTimeout(() => setIsAutoPlaying(true), 4000);
+    }, 300);
   };
 
   const handleTouchStart = (e) => {
@@ -46,6 +66,8 @@ export default function ProjectCarousel() {
   };
 
   const handleTouchEnd = () => {
+    if (transitioning) return;
+
     if (touchStart - touchEnd > 75) {
       nextSlide();
     }
@@ -55,9 +77,15 @@ export default function ProjectCarousel() {
     }
   };
 
+  const getModifiedIndex = (index) => {
+    if (index < 0) return projects.length - 1;
+    if (index >= projects.length) return 0;
+    return index;
+  };
+
   useEffect(() => {
     let interval;
-    if (isAutoPlaying && projects.length > 0) {
+    if (isAutoPlaying && projects.length > 0 && !transitioning) {
       interval = setInterval(() => {
         nextSlide();
       }, 5000);
@@ -68,7 +96,7 @@ export default function ProjectCarousel() {
         clearInterval(interval);
       }
     };
-  }, [currentIndex, isAutoPlaying, projects.length]);
+  }, [currentIndex, isAutoPlaying, projects.length, transitioning]);
 
   return (
     <section
@@ -92,7 +120,7 @@ export default function ProjectCarousel() {
           </p>
         </div>
 
-        <div className="relative w-full max-w-3xl mx-auto">
+        <div className="relative w-full max-w-5xl mx-auto">
           {isError && (
             <div className="flex flex-col items-center justify-center h-[350px] md:h-[450px] bg-gray-900/50 rounded-xl text-center p-6">
               <p className="text-red-400 mb-2">Something went wrong</p>
@@ -109,99 +137,166 @@ export default function ProjectCarousel() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
+                  className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
                   onClick={prevSlide}
                   aria-label="Previous slide"
-                  disabled={isLoading || projects.length <= 1}
+                  disabled={isLoading || projects.length <= 1 || transitioning}
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-4 w-4" />
                 </Button>
 
                 <Button
                   variant="outline"
                   size="icon"
-                  className="bg-white text-[#3445ED] border-white hover:bg-white hover:text-[#3445ED] rounded-full h-10 w-10 flex items-center justify-center"
+                  className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
                   onClick={nextSlide}
                   aria-label="Next slide"
-                  disabled={isLoading || projects.length <= 1}
+                  disabled={isLoading || projects.length <= 1 || transitioning}
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="overflow-hidden rounded-xl shadow-xl">
+              <div className="overflow-hidden">
                 {isLoading ? (
-                  <div className="h-[350px] md:h-[450px] bg-gray-800 rounded-xl overflow-hidden">
-                    <div className="flex flex-col items-center justify-center h-full">
-                      <Skeleton className="w-full h-full absolute" />
-                      <div className="z-10 flex flex-col items-center p-6 md:p-8">
-                        <div className="flex gap-2 mb-3">
-                          <Skeleton className="h-6 w-16 rounded-full" />
-                          <Skeleton className="h-6 w-20 rounded-full" />
+                  <div className="h-[350px] md:h-[450px] bg-gray-800/50 rounded-xl overflow-hidden">
+                    <div className="relative h-full flex items-center justify-center">
+                      <div className="absolute left-1/2 transform -translate-x-1/2 w-3/5 h-full z-20">
+                        <Skeleton className="h-full w-full rounded-xl absolute" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-end p-6 md:p-8">
+                          <Skeleton className="h-7 w-40 mb-2" />
+                          <Skeleton className="h-4 w-52 mb-1" />
+                          <Skeleton className="h-4 w-48 mb-6" />
                         </div>
-                        <Skeleton className="h-8 w-48 mb-2" />
-                        <Skeleton className="h-4 w-64 mb-1" />
-                        <Skeleton className="h-4 w-56 mb-1" />
-                        <Skeleton className="h-4 w-60" />
+                      </div>
+                      <div className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10">
+                        <Skeleton className="h-full w-full rounded-xl opacity-40 scale-90" />
+                      </div>
+                      <div className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10">
+                        <Skeleton className="h-full w-full rounded-xl opacity-40 scale-90" />
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div
-                    className="flex transition-transform duration-500 ease-out h-[350px] md:h-[450px]"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                  >
-                    {projects && projects.length > 0 ? (
-                      projects.map((project) => (
-                        <div
-                          key={project._id}
-                          className="w-full flex-shrink-0 relative rounded-xl overflow-hidden shadow-lg"
-                        >
-                          <div className="relative h-full">
-                            {project.image && (
-                              <div className="absolute inset-0">
-                                <Image
-                                  src={project.image}
-                                  alt={project.title || "Project"}
-                                  fill
-                                  className="object-cover w-full h-full"
-                                  priority={true}
-                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
-                                  unoptimized={true}
-                                  style={{
-                                    objectFit: "cover",
-                                    objectPosition: "center",
-                                  }}
-                                />
-                              </div>
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
-
-                            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
-                              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                                {project.title || "Untitled Project"}
-                              </h3>
-                              <p className="text-gray-300 mb-6 max-w-2xl">
-                                {project.description ||
-                                  "No description available"}
-                              </p>
+                  <div className="relative">
+                    <div
+                      className="relative h-[350px] md:h-[450px]"
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                    >
+                      {projects && projects.length > 0 ? (
+                        <>
+                          <div className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out">
+                            <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg">
+                              {projects[getModifiedIndex(currentIndex - 1)]
+                                ?.image && (
+                                <div className="absolute inset-0">
+                                  <Image
+                                    src={
+                                      projects[
+                                        getModifiedIndex(currentIndex - 1)
+                                      ].image
+                                    }
+                                    alt={
+                                      projects[
+                                        getModifiedIndex(currentIndex - 1)
+                                      ].title || "Previous Project"
+                                    }
+                                    fill
+                                    className="object-cover"
+                                    sizes="25vw"
+                                    unoptimized={true}
+                                    style={{
+                                      objectFit: "cover",
+                                      objectPosition: "center",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
                             </div>
                           </div>
+
+                          <div className="absolute left-1/2 transform -translate-x-1/2 w-3/5 h-full z-20 transition-all duration-300 ease-out">
+                            <div className="relative h-full rounded-xl overflow-hidden shadow-2xl">
+                              {projects[currentIndex]?.image && (
+                                <div className="absolute inset-0">
+                                  <Image
+                                    src={projects[currentIndex].image}
+                                    alt={
+                                      projects[currentIndex].title ||
+                                      "Current Project"
+                                    }
+                                    fill
+                                    className="object-cover"
+                                    priority={true}
+                                    sizes="60vw"
+                                    unoptimized={true}
+                                    style={{
+                                      objectFit: "cover",
+                                      objectPosition: "center",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+
+                              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
+                                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                  {projects[currentIndex].title ||
+                                    "Untitled Project"}
+                                </h3>
+                                <p className="text-gray-300 mb-6 max-w-2xl">
+                                  {projects[currentIndex].description ||
+                                    "No description available"}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out">
+                            <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg">
+                              {projects[getModifiedIndex(currentIndex + 1)]
+                                ?.image && (
+                                <div className="absolute inset-0">
+                                  <Image
+                                    src={
+                                      projects[
+                                        getModifiedIndex(currentIndex + 1)
+                                      ].image
+                                    }
+                                    alt={
+                                      projects[
+                                        getModifiedIndex(currentIndex + 1)
+                                      ].title || "Next Project"
+                                    }
+                                    fill
+                                    className="object-cover"
+                                    sizes="25vw"
+                                    unoptimized={true}
+                                    style={{
+                                      objectFit: "cover",
+                                      objectPosition: "center",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="w-full h-full relative rounded-xl overflow-hidden shadow-lg bg-gray-800">
+                          <div className="relative h-full flex items-center justify-center">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                            <p className="text-white z-10">
+                              No projects available
+                            </p>
+                          </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="w-full flex-shrink-0 relative rounded-xl overflow-hidden shadow-lg bg-gray-800">
-                        <div className="relative h-full flex items-center justify-center">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
-                          <p className="text-white z-10">
-                            No projects available
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -218,6 +313,7 @@ export default function ProjectCarousel() {
                       }`}
                       onClick={() => goToSlide(index)}
                       aria-label={`Go to slide ${index + 1}`}
+                      disabled={transitioning}
                     />
                   ))}
                 </div>
