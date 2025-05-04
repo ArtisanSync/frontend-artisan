@@ -6,19 +6,19 @@ import RightBanner from "../../public/right-banner.svg";
 function Hero() {
   return (
     <section
-      className="relative min-h-screen w-full overflow-hidden pt-16"
+      className="relative h-[60vh] w-full overflow-hidden pt-16 md:h-full"
       id="hero"
     >
-      <div className="relative w-full">
-        <div className="hidden sm:block">
+      <div className="w-full max-w-[425px] md:max-w-[1920px] 2xl:max-w-[2560px]">
+        <div className="">
           <Image
-            className="absolute top-[112px] left-0 w-1/3 md:w-1/4 lg:w-auto"
+            className="float-left w-1/2 pt-[35px] md:pt-[50px] md:w-2/3"
             src={LeftBanner}
             alt="Decorative left banner"
             priority
           />
           <Image
-            className="absolute top-0 right-0 w-1/3 md:w-1/4 lg:w-auto"
+            className="float-right w-1/3 md:w-1/3"
             src={RightBanner}
             alt="Decorative right banner"
             priority
@@ -26,7 +26,7 @@ function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 md:pt-32 lg:pt-40">
+      <div className="absolute z-10 mx-auto px-4 sm:px-6 lg:px-8 p-16 sm:pt-24 md:pt-32 lg:pt-40 xl:px-[150px] 2xl:ms-auto">
         <div className="max-w-3xl">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold mb-4 sm:mb-6 md:mb-8 text-white capitalize">
             welcome to Artisan Sync
