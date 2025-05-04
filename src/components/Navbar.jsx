@@ -73,7 +73,7 @@ function Navbar() {
     >
       <div className="container flex h-16 items-center justify-between px-4 md:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative overflow-hidden rounded-full bg-white/5 p-1">
+          <div className="relative overflow-hidden rounded-full">
             <Image
               src={artisanSyncLogo}
               alt="Artisan Sync Logo"
