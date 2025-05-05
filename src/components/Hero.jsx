@@ -32,7 +32,7 @@ function Hero() {
             welcome to Artisan Sync
           </h1>
 
-          <p className="text-sm sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white">
+          <p className="text-sm text-justify sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white">
             We are ArtisanSync as a team of professional software developers
             dedicated to delivering the best digital solutions for your business
             website. From responsive websites to intuitive mobile applications,
