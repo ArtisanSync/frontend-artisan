@@ -3,7 +3,6 @@ WORKDIR /app
 COPY . .
 RUN npm ci
 RUN npm run build
-RUN npm run export
 
 FROM nginx:alpine
 COPY --from=builder /app/out /usr/share/nginx/html
