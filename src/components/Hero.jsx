@@ -6,7 +6,7 @@ import RightBanner from "../../public/right-banner.svg";
 function Hero() {
   return (
     <section
-      className="relative h-[60vh] w-full overflow-hidden pt-16 md:h-full"
+      className="relative h-[61vh] w-full overflow-hidden pt-16 md:h-full"
       id="hero"
     >
       <div className="w-full max-w-[425px] md:max-w-[1920px] 2xl:max-w-[2560px]">
@@ -33,13 +33,13 @@ function Hero() {
           </h1>
 
           <p className="text-sm sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant
-            cras morbi hendrerit nunc vel sapien. In habitasse at diam
-            suspendisse non vitae fermentum, pharetra arcu. Viverra a morbi ut
-            donec in. Ac diam, at sed cras nisi.
+            We are ArtisanSync as a team of professional software developers
+            dedicated to delivering the best digital solutions for your business
+            website. From responsive websites to intuitive mobile applications,
+            we translate your vision into high-quality digital products.
           </p>
 
-          <Button className="bg-[#CEE0FD] w-full sm:w-auto min-w-[180px] h-[43px] text-black hover:bg-blue-600 hover:text-white">
+          <Button className="bg-[#CEE0FD] w-full min-w-[180px] md:w-auto md:h-[43px] text-black hover:bg-blue-600 hover:text-white">
             lets work together
           </Button>
         </div>
