@@ -12,7 +12,7 @@ function Footer() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-between">
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="size-10 bg-primary p-1.5 rounded-md flex items-center justify-center">
+              <div className="size-10 p-1.5 rounded-md flex items-center justify-center">
                 <Image
                   src={images.artisanSyncLogo}
                   alt="Artisan Sync Logo"
