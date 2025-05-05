@@ -41,6 +41,7 @@ export default function ServicesAccordion() {
         "Authentication systems",
         "Performance optimization",
         "Security implementation",
+        "Serverless Architecture",
       ],
     },
     {
@@ -55,6 +56,7 @@ export default function ServicesAccordion() {
         "API integration",
         "Frontend implementation",
         "DevOps setup",
+        "Serverless Architecture",
       ],
     },
     {
