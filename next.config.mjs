@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  experimental: {
-    appDir: true,
-    serverActions: true,
-  },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
