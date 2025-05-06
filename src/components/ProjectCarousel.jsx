@@ -193,6 +193,16 @@ export default function ProjectCarousel() {
                   </Button>
                 </div>
 
+                {nextClickCount >= 3 && !isLoading && projects.length > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <Link href="/projects">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 transition-all shadow-lg hover:shadow-blue-500/20">
+                        View All Projects
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+
                 <div className="overflow-hidden">
                   {isLoading ? (
                     <div className="h-[350px] md:h-[450px] bg-gray-800/50 rounded-xl overflow-hidden">
@@ -223,7 +233,6 @@ export default function ProjectCarousel() {
                       >
                         {projects && projects.length > 0 ? (
                           <>
-                            {/* Left Card (Previous) */}
                             <div
                               className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
                               onClick={prevSlide}
@@ -258,7 +267,6 @@ export default function ProjectCarousel() {
                               </div>
                             </div>
 
-                            {/* Center Card (Current) */}
                             <div
                               className="absolute left-1/2 transform -translate-x-1/2 w-[90%] md:w-3/5 h-full z-20 transition-all duration-300 ease-out cursor-pointer group"
                               onClick={() => openModal(projects[currentIndex])}
@@ -286,7 +294,6 @@ export default function ProjectCarousel() {
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10 transition-opacity duration-300"></div>
 
-                                {/* Glowing border effect on hover */}
                                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                   <div className="absolute inset-0 rounded-xl border border-blue-500/50 shadow-[0px_0px_15px_rgba(59,130,246,0.5)]"></div>
                                 </div>
@@ -306,7 +313,6 @@ export default function ProjectCarousel() {
                               </div>
                             </div>
 
-                            {/* Right Card (Next) */}
                             <div
                               className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
                               onClick={nextSlide}
@@ -356,18 +362,6 @@ export default function ProjectCarousel() {
                   )}
                 </div>
 
-                {/* View All Projects button - shows after 3 next clicks */}
-                {nextClickCount >= 3 && !isLoading && projects.length > 0 && (
-                  <div className="flex justify-center mt-8">
-                    <Link href="/projects">
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20">
-                        <Grid2X2 className="h-4 w-4" />
-                        View All Projects
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-
                 {!isLoading && projects && projects.length > 1 && (
                   <div className="flex justify-center gap-2 mt-6">
                     {projects.map((_, index) => (
@@ -391,7 +385,6 @@ export default function ProjectCarousel() {
         </div>
       </section>
 
-      {/* Project Modal */}
       {showModal && selectedProject && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div
@@ -436,7 +429,7 @@ export default function ProjectCarousel() {
               </h3>
 
               <div className="space-y-4">
-                <p className="text-gray-300 ">
+                <p className="text-gray-300">
                   {selectedProject.description || "No description available"}
                 </p>
 
@@ -470,7 +463,7 @@ export default function ProjectCarousel() {
                 {selectedProject.link && (
                   <div className="mt-6">
                     <Button
-                      className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base px-4 py-1.5 md:py-2 rounded-full transition-colors"
                       onClick={() =>
                         window.open(selectedProject.link, "_blank")
                       }
