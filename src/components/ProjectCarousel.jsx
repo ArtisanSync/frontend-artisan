@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Grid2X2 } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -16,6 +17,7 @@ export default function ProjectCarousel() {
   const [transitioning, setTransitioning] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [nextClickCount, setNextClickCount] = useState(0);
 
   const { data, isLoading, isError, error } = useProjects();
   const projects = data?.data || [];
@@ -27,6 +29,8 @@ export default function ProjectCarousel() {
     setCurrentIndex((prevIndex) =>
       prevIndex === projects.length - 1 ? 0 : prevIndex + 1
     );
+
+    setNextClickCount((prev) => prev + 1);
 
     setTimeout(() => {
       setTransitioning(false);
@@ -89,13 +93,13 @@ export default function ProjectCarousel() {
     setSelectedProject(project);
     setShowModal(true);
     setIsAutoPlaying(false);
-    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedProject(null);
-    document.body.style.overflow = ""; // Re-enable scrolling
+    document.body.style.overflow = "";
     setTimeout(() => setIsAutoPlaying(true), 1000);
   };
 
@@ -114,7 +118,6 @@ export default function ProjectCarousel() {
     };
   }, [currentIndex, isAutoPlaying, projects.length, transitioning, showModal]);
 
-  // Handle escape key to close modal
   useEffect(() => {
     const handleEscKey = (e) => {
       if (e.key === "Escape" && showModal) {
@@ -352,6 +355,18 @@ export default function ProjectCarousel() {
                     </div>
                   )}
                 </div>
+
+                {/* View All Projects button - shows after 3 next clicks */}
+                {nextClickCount >= 3 && !isLoading && projects.length > 0 && (
+                  <div className="flex justify-center mt-8">
+                    <Link href="/projects">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20">
+                        <Grid2X2 className="h-4 w-4" />
+                        View All Projects
+                      </Button>
+                    </Link>
+                  </div>
+                )}
 
                 {!isLoading && projects && projects.length > 1 && (
                   <div className="flex justify-center gap-2 mt-6">

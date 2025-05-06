@@ -41,7 +41,7 @@ export default function NotFound() {
               variant="outline"
               className="border-white/10 text-white hover:bg-white/5 bg-white/5"
             >
-              <Link href="javascript:history.back()">
+              <Link href="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Go Back
               </Link>
