@@ -19,17 +19,17 @@ export default function Dashboard() {
   const stats = [
     {
       name: "Projects",
-      count: projects?.data?.length || 0,
+      count: Array.isArray(projects?.data) ? projects.data.length : 0,
       path: "/admin/projects",
     },
     {
       name: "Services",
-      count: services?.data?.length || 0,
+      count: Array.isArray(services?.data) ? services.data.length : 0,
       path: "/admin/services",
     },
     {
       name: "Team Members",
-      count: teamMembers?.data?.length || 0,
+      count: Array.isArray(teamMembers?.data) ? teamMembers.data.length : 0,
       path: "/admin/team",
     },
   ];
@@ -71,19 +71,23 @@ export default function Dashboard() {
                 Recent Projects
               </h2>
               <div className="space-y-2">
-                {projects?.data?.slice(0, 5).map((project) => (
-                  <Link href={`/admin/projects/${project.id}`} key={project.id}>
-                    <div className="p-3 hover:bg-white/10 rounded-md transition">
-                      <h3 className="text-white font-medium">
-                        {project.title}
-                      </h3>
-                      <p className="text-white/60 text-sm truncate">
-                        {project.description}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-                {projects?.data?.length === 0 && (
+                {Array.isArray(projects?.data) && projects.data.length > 0 ? (
+                  projects.data.slice(0, 5).map((project) => (
+                    <Link
+                      href={`/admin/projects/${project.id}`}
+                      key={project.id || `project-${Math.random()}`}
+                    >
+                      <div className="p-3 hover:bg-white/10 rounded-md transition">
+                        <h3 className="text-white font-medium">
+                          {project.title}
+                        </h3>
+                        <p className="text-white/60 text-sm truncate">
+                          {project.description}
+                        </p>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
                   <p className="text-white/60 py-3">No projects yet.</p>
                 )}
               </div>
@@ -102,17 +106,23 @@ export default function Dashboard() {
                 Recent Services
               </h2>
               <div className="space-y-2">
-                {services?.data?.slice(0, 5).map((service) => (
-                  <Link href={`/admin/services/${service.id}`} key={service.id}>
-                    <div className="p-3 hover:bg-white/10 rounded-md transition">
-                      <h3 className="text-white font-medium">{service.name}</h3>
-                      <p className="text-white/60 text-sm truncate">
-                        {service.description}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-                {services?.data?.length === 0 && (
+                {Array.isArray(services?.data) && services.data.length > 0 ? (
+                  services.data.slice(0, 5).map((service) => (
+                    <Link
+                      href={`/admin/services/${service.id}`}
+                      key={service.id || `service-${Math.random()}`}
+                    >
+                      <div className="p-3 hover:bg-white/10 rounded-md transition">
+                        <h3 className="text-white font-medium">
+                          {service.title || service.name}
+                        </h3>
+                        <p className="text-white/60 text-sm truncate">
+                          {service.description}
+                        </p>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
                   <p className="text-white/60 py-3">No services yet.</p>
                 )}
               </div>

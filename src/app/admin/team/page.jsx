@@ -1,4 +1,3 @@
-// src/app/admin/team/page.jsx
 "use client";
 
 import { useState } from "react";
@@ -9,8 +8,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function TeamPage() {
-  const { data: teamMembers, isLoading, isError } = useTeamsAdmin();
+  const { data: teamData, isLoading, isError } = useTeamsAdmin();
   const router = useRouter();
+
+  const teamMembers = Array.isArray(teamData) ? teamData : [];
 
   if (isLoading) {
     return (
@@ -42,36 +43,37 @@ export default function TeamPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {teamMembers?.map((member) => (
-            <div
-              key={member.id}
-              className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition cursor-pointer"
-              onClick={() => router.push(`/admin/team/${member.id}`)}
-            >
-              <div className="w-24 h-24 relative rounded-full overflow-hidden mx-auto mb-3">
-                {member.photo ? (
-                  <Image
-                    src={member.photo}
-                    alt={member.name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                    <span className="text-white/40">No Photo</span>
-                  </div>
-                )}
+          {teamMembers.length > 0 &&
+            teamMembers.map((member) => (
+              <div
+                key={member.id || `member-${Math.random()}`}
+                className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition cursor-pointer"
+                onClick={() => router.push(`/admin/team/${member.id}`)}
+              >
+                <div className="w-24 h-24 relative rounded-full overflow-hidden mx-auto mb-3">
+                  {member.photo ? (
+                    <Image
+                      src={member.photo}
+                      alt={member.name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                      <span className="text-white/40">No Photo</span>
+                    </div>
+                  )}
+                </div>
+                <h3 className="text-white font-medium text-center">
+                  {member.name}
+                </h3>
+                <p className="text-white/60 text-sm text-center">
+                  {member.position || member.title}
+                </p>
               </div>
-              <h3 className="text-white font-medium text-center">
-                {member.name}
-              </h3>
-              <p className="text-white/60 text-sm text-center">
-                {member.position}
-              </p>
-            </div>
-          ))}
+            ))}
 
-          {teamMembers?.length === 0 && (
+          {teamMembers.length === 0 && (
             <div className="col-span-full text-center text-white/60 py-8">
               No team members yet. Add your first team member!
             </div>

@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function ProjectsPage() {
-  const { data: projects, isLoading, isError } = useProjectsAdmin();
-
+  const { data: projectsData, isLoading, isError } = useProjectsAdmin();
   const router = useRouter();
+
+  const projects = Array.isArray(projectsData) ? projectsData : [];
 
   if (isLoading) {
     return (
@@ -42,36 +43,37 @@ export default function ProjectsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((project) => (
-            <div
-              key={project.id || `project-${Math.random()}`}
-              className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition cursor-pointer"
-              onClick={() => router.push(`/admin/projects/${project.id}`)}
-            >
-              <div className="aspect-video relative mb-3 rounded-md overflow-hidden">
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                    <span className="text-white/40">No Image</span>
-                  </div>
-                )}
+          {projects.length > 0 &&
+            projects.map((project) => (
+              <div
+                key={project.id || `project-${Math.random()}`}
+                className="bg-white/5 p-4 rounded-lg hover:bg-white/10 transition cursor-pointer"
+                onClick={() => router.push(`/admin/projects/${project.id}`)}
+              >
+                <div className="aspect-video relative mb-3 rounded-md overflow-hidden">
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                      <span className="text-white/40">No Image</span>
+                    </div>
+                  )}
+                </div>
+                <h3 className="text-white font-medium truncate">
+                  {project.title}
+                </h3>
+                <p className="text-white/60 text-sm line-clamp-2">
+                  {project.description}
+                </p>
               </div>
-              <h3 className="text-white font-medium truncate">
-                {project.title}
-              </h3>
-              <p className="text-white/60 text-sm line-clamp-2">
-                {project.description}
-              </p>
-            </div>
-          ))}
+            ))}
 
-          {projects?.length === 0 && (
+          {projects.length === 0 && (
             <div className="col-span-full text-center text-white/60 py-8">
               No projects yet. Create your first project!
             </div>

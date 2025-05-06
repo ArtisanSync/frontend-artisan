@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function ServicesPage() {
-  const { data: services, isLoading, isError } = useServicesAdmin();
+  const { data: servicesData, isLoading, isError } = useServicesAdmin();
   const router = useRouter();
+
+  const services = Array.isArray(servicesData) ? servicesData : [];
 
   if (isLoading) {
     return (
@@ -49,32 +51,35 @@ export default function ServicesPage() {
               </tr>
             </thead>
             <tbody>
-              {services?.map((service) => (
-                <tr
-                  key={service.id}
-                  className="border-b border-white/5 hover:bg-white/5"
-                >
-                  <td className="py-3 px-4">{service.name}</td>
-                  <td className="py-3 px-4 text-white/70 truncate max-w-xs">
-                    {service.description}
-                  </td>
-                  <td className="py-3 px-4">
-                    <Button
-                      onClick={() =>
-                        router.push(`/admin/services/${service.id}`)
-                      }
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
-                      size="sm"
-                    >
-                      Edit
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+              {services.length > 0 &&
+                services.map((service) => (
+                  <tr
+                    key={service.id || `service-${Math.random()}`}
+                    className="border-b border-white/5 hover:bg-white/5"
+                  >
+                    <td className="py-3 px-4">
+                      {service.name || service.title}
+                    </td>
+                    <td className="py-3 px-4 text-white/70 truncate max-w-xs">
+                      {service.description}
+                    </td>
+                    <td className="py-3 px-4">
+                      <Button
+                        onClick={() =>
+                          router.push(`/admin/services/${service.id}`)
+                        }
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                        size="sm"
+                      >
+                        Edit
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
-          {services?.length === 0 && (
+          {services.length === 0 && (
             <div className="text-center text-white/60 py-8">
               No services yet. Create your first service!
             </div>
