@@ -5,7 +5,7 @@ import { MessageSquare, Award, Briefcase, GraduationCap } from "lucide-react";
 
 const FounderSection = () => {
   return (
-    <div className="py-20 relative overflow-hidden">
+    <div className="py-7 md:py-20 relative overflow-hidden">
       <div className="container max-w-6xl mx-auto px-4 z-10 relative">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="md:w-1/2 space-y-6">
@@ -18,7 +18,7 @@ const FounderSection = () => {
             </Badge>
 
             <h2 className="text-4xl py-4 md:text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Yogi...
+              Yogi Efani Yancandra
             </h2>
 
             <div className="space-y-4">

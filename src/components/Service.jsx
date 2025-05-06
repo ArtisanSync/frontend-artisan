@@ -1,23 +1,79 @@
-import { Card, CardContent } from "./ui/card";
+"use client";
 
-function Service() {
-  const services = [
-    {
-      id: "01",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant cras morbi hendrerit nunc vel sapien. In habitasse at diam suspendisse non vitae fermentum, pharetra arcu. Viverra a morbi ut donec in. Ac diam, at sed cras nisi.",
-    },
-    {
-      id: "02",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant cras morbi hendrerit nunc vel sapien. In habitasse at diam suspendisse non vitae fermentum, pharetra arcu. Viverra a morbi ut donec in. Ac diam, at sed cras nisi.",
-    },
-    {
-      id: "03",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant cras morbi hendrerit nunc vel sapien. In habitasse at diam suspendisse non vitae fermentum, pharetra arcu. Viverra a morbi ut donec in. Ac diam, at sed cras nisi.",
-    },
-  ];
+import { Card, CardContent } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
+import { useServices } from "@/hooks/use-services";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { Button } from "./ui/button";
+
+function ServiceSkeleton() {
+  return (
+    <Card className="bg-black/60 border-none rounded-xl shadow-lg">
+      <CardContent className="py-[20px] px-[24px]">
+        <Skeleton className="h-12 w-12 rounded-md mb-[23px] bg-gray-700" />
+        <Skeleton className="h-4 w-full rounded-md mb-2 bg-gray-700" />
+        <Skeleton className="h-4 w-full rounded-md mb-2 bg-gray-700" />
+        <Skeleton className="h-4 w-3/4 rounded-md bg-gray-700" />
+      </CardContent>
+    </Card>
+  );
+}
+
+function ServiceList({ services }) {
+  if (!services || services.length === 0) {
+    return <p className="text-gray-400">No services available.</p>;
+  }
+
+  return (
+    <>
+      {services.map((service) => (
+        <Card
+          key={service._id}
+          className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 transition"
+        >
+          <CardContent className="py-[20px] px-[24px]">
+            <p className="text-4xl sm:text-[48px] font-medium mb-[23px] text-white">
+              {service.number}
+            </p>
+            <h4 className="text-xl font-semibold text-blue-400 mb-2">
+              {service.title}
+            </h4>
+            <p className="text-[16px] leading-relaxed text-white">
+              {service.description}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </>
+  );
+}
+
+function ErrorDisplay({ refetch }) {
+  return (
+    <Card className="bg-black/60 border-none rounded-xl shadow-lg col-span-3">
+      <CardContent className="py-[30px] px-[24px] flex flex-col items-center">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h4 className="text-xl font-semibold text-white mb-2">
+          Failed to load services
+        </h4>
+        <p className="text-[16px] leading-relaxed text-gray-300 mb-6 text-center">
+          There was a problem loading the services. Please try again.
+        </p>
+        <Button
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => refetch()}
+        >
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Try Again
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function Service() {
+  const { data, isLoading, isError, refetch } = useServices();
+  const services = data?.data || [];
 
   return (
     <section className="text-white pt-4 sm:pt-6 md:pt-8" id="service">
@@ -38,25 +94,19 @@ function Service() {
             </h3>
           </div>
 
-          {services.map((service, index) => (
-            <Card
-              key={index}
-              className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 transition"
-            >
-              <CardContent className="py-[20px] px-[24px]">
-                <p className="text-4xl sm:text-[48px] font-medium mb-[23px] text-white">
-                  {service.id}
-                </p>
-                <p className="text-[16px] leading-relaxed text-white">
-                  {service.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {isLoading ? (
+            <>
+              <ServiceSkeleton />
+              <ServiceSkeleton />
+              <ServiceSkeleton />
+            </>
+          ) : isError ? (
+            <ErrorDisplay refetch={refetch} />
+          ) : (
+            <ServiceList services={services} />
+          )}
         </div>
       </div>
     </section>
   );
 }
-
-export default Service;
