@@ -109,7 +109,7 @@ export default function ProjectsPage() {
               {currentProjects.map((project) => (
                 <Card
                   key={project._id}
-                  className="bg-gray-800/30 border-gray-700 overflow-hidden hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all group"
+                  className="bg-gray-800/30 border-gray-700 overflow-hidden hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all group py-0"
                 >
                   <div className="relative h-[200px] overflow-hidden bg-gray-700">
                     {project.image ? (
@@ -191,7 +191,7 @@ export default function ProjectsPage() {
                                 src={project.image}
                                 alt={project.title || "Project image"}
                                 fill
-                                className="object-contain"
+                                className="object-cover rounded-md"
                                 sizes="(max-width: 768px) 100vw, 800px"
                                 unoptimized={true}
                               />
