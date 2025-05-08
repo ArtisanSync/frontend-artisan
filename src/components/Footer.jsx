@@ -39,7 +39,7 @@ function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   About Us
                 </Link>
@@ -47,7 +47,7 @@ function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   Our Team
                 </Link>
@@ -63,7 +63,7 @@ function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-gray-400 hover:text-primary hover:translate-x-1 transition-all duration-300 inline-flex"
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   Web Development
                 </Link>

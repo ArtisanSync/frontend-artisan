@@ -25,26 +25,30 @@ function ServiceList({ services }) {
   }
 
   return (
-    <>
+    <div className="flex flex-wrap justify-center gap-4">
       {services.map((service) => (
-        <Card
+        <div
           key={service._id}
-          className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 transition"
+          className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)] 2xl:w-[calc(25%-16px)]"
         >
-          <CardContent className="py-[20px] px-[24px]">
-            <p className="text-4xl sm:text-[48px] font-medium mb-[23px] text-white">
-              {service.number}
-            </p>
-            <h4 className="text-xl font-semibold text-blue-400 mb-2">
-              {service.title}
-            </h4>
-            <p className="text-[16px] leading-relaxed text-white">
-              {service.description}
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 flex flex-col h-full">
+            <CardContent className="py-[20px] px-[24px] flex flex-col flex-grow justify-between h-full">
+              <div className="flex flex-col h-full">
+                <p className="text-4xl sm:text-[48px] font-medium mb-[23px] text-white text-center">
+                  {service.number}
+                </p>
+                <h4 className="text-xl font-semibold text-blue-400 mb-2 text-center">
+                  {service.title}
+                </h4>
+                <p className="text-[16px] leading-relaxed text-white text-justify hyphens-auto flex-grow">
+                  {service.description}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ))}
-    </>
+    </div>
   );
 }
 
@@ -77,29 +81,26 @@ export default function Service() {
 
   return (
     <section className="text-white pt-4 sm:pt-6 md:pt-8" id="service">
-      <div className="px-4 sm:px-6 lg:px-8 xl:ml-[126px] xl:mr-[83px] mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-screen-2xl">
         <div className="text-center mb-8 sm:mb-10">
           <h2 className="text-[#2563EB] text-2xl md:text-[32px] font-bold">
             WHAT CAN WE DO FOR YOU
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-start">
-          <div className="w-full h-full flex flex-col justify-center text-center sm:text-left sm:col-span-2 lg:col-span-1">
-            <h3 className="text-3xl lg:text-[40px] font-bold text-white">
-              Our
-            </h3>
-            <h3 className="text-3xl lg:text-[40px] font-bold text-white">
-              Services
-            </h3>
-          </div>
-
+        <div className="w-full max-w-full mx-auto">
           {isLoading ? (
-            <>
-              <ServiceSkeleton />
-              <ServiceSkeleton />
-              <ServiceSkeleton />
-            </>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
+                <ServiceSkeleton />
+              </div>
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
+                <ServiceSkeleton />
+              </div>
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
+                <ServiceSkeleton />
+              </div>
+            </div>
           ) : isError ? (
             <ErrorDisplay refetch={refetch} />
           ) : (

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Grid2X2 } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -16,6 +17,7 @@ export default function ProjectCarousel() {
   const [transitioning, setTransitioning] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [nextClickCount, setNextClickCount] = useState(0);
 
   const { data, isLoading, isError, error } = useProjects();
   const projects = data?.data || [];
@@ -27,6 +29,8 @@ export default function ProjectCarousel() {
     setCurrentIndex((prevIndex) =>
       prevIndex === projects.length - 1 ? 0 : prevIndex + 1
     );
+
+    setNextClickCount((prev) => prev + 1);
 
     setTimeout(() => {
       setTransitioning(false);
@@ -89,13 +93,13 @@ export default function ProjectCarousel() {
     setSelectedProject(project);
     setShowModal(true);
     setIsAutoPlaying(false);
-    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedProject(null);
-    document.body.style.overflow = ""; // Re-enable scrolling
+    document.body.style.overflow = "";
     setTimeout(() => setIsAutoPlaying(true), 1000);
   };
 
@@ -114,7 +118,6 @@ export default function ProjectCarousel() {
     };
   }, [currentIndex, isAutoPlaying, projects.length, transitioning, showModal]);
 
-  // Handle escape key to close modal
   useEffect(() => {
     const handleEscKey = (e) => {
       if (e.key === "Escape" && showModal) {
@@ -190,6 +193,16 @@ export default function ProjectCarousel() {
                   </Button>
                 </div>
 
+                {nextClickCount >= 3 && !isLoading && projects.length > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <Link href="/projects">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 transition-all shadow-lg hover:shadow-blue-500/20">
+                        View All Projects
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+
                 <div className="overflow-hidden">
                   {isLoading ? (
                     <div className="h-[350px] md:h-[450px] bg-gray-800/50 rounded-xl overflow-hidden">
@@ -213,15 +226,18 @@ export default function ProjectCarousel() {
                   ) : (
                     <div className="relative">
                       <div
-                        className="relative h-[350px] md:h-[450px]"
+                        className="relative h-[350px] md:h-[450px] overflow-visible"
                         onTouchStart={handleTouchStart}
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
                       >
                         {projects && projects.length > 0 ? (
                           <>
-                            <div className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out">
-                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg">
+                            <div
+                              className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
+                              onClick={prevSlide}
+                            >
+                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-60 group-hover:blur-[0.5px] group-hover:scale-95 transition-all duration-300">
                                 {projects[getModifiedIndex(currentIndex - 1)]
                                   ?.image && (
                                   <div className="absolute inset-0">
@@ -237,25 +253,25 @@ export default function ProjectCarousel() {
                                         ].title || "Previous Project"
                                       }
                                       fill
-                                      className="object-cover"
+                                      className="object-contain"
                                       sizes="25vw"
                                       unoptimized={true}
                                       style={{
-                                        objectFit: "cover",
+                                        objectFit: "contain",
                                         objectPosition: "center",
                                       }}
                                     />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10"></div>
                               </div>
                             </div>
 
                             <div
-                              className="absolute left-1/2 transform -translate-x-1/2 w-3/5 h-full z-20 transition-all duration-300 ease-out cursor-pointer"
+                              className="absolute left-1/2 transform -translate-x-1/2 w-[90%] md:w-3/5 h-full z-20 transition-all duration-300 ease-out cursor-pointer group"
                               onClick={() => openModal(projects[currentIndex])}
                             >
-                              <div className="relative h-full rounded-xl overflow-hidden shadow-2xl">
+                              <div className="relative h-full rounded-xl overflow-hidden shadow-2xl group-hover:shadow-blue-500/20 group-hover:shadow-lg transition-all duration-300">
                                 {projects[currentIndex]?.image && (
                                   <div className="absolute inset-0">
                                     <Image
@@ -265,34 +281,43 @@ export default function ProjectCarousel() {
                                         "Current Project"
                                       }
                                       fill
-                                      className="object-cover"
+                                      className="object-contain md:object-cover group-hover:scale-105 transition-transform duration-700"
                                       priority={true}
                                       sizes="60vw"
                                       unoptimized={true}
                                       style={{
-                                        objectFit: "cover",
+                                        objectFit: "contain",
                                         objectPosition: "center",
                                       }}
                                     />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10 transition-opacity duration-300"></div>
 
-                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-center text-center">
-                                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                  <div className="absolute inset-0 rounded-xl border border-blue-500/50 shadow-[0px_0px_15px_rgba(59,130,246,0.5)]"></div>
+                                </div>
+
+                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8  h-full w-full text-center grid grid-rows-3">
+                                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white group-hover:text-blue-300 transition-colors duration-300 mt-auto">
                                     {projects[currentIndex].title ||
                                       "Untitled Project"}
                                   </h3>
-                                  <p className="text-gray-300 text-justify mb-6 max-w-2xl">
-                                    {projects[currentIndex].description ||
-                                      "No description available"}
-                                  </p>
+                                  <div className="row-span-2 flex items-center">
+                                    <p className="text-gray-300 text-justify max-w-2xl group-hover:text-white transition-colors duration-300 text-[10px] md:text-[14px] lg:text-[16px] ">
+                                      {projects[currentIndex].description ||
+                                        "No description available"}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out">
-                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg">
+                            <div
+                              className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
+                              onClick={nextSlide}
+                            >
+                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-60 group-hover:blur-[0.5px] group-hover:scale-95 transition-all duration-300">
                                 {projects[getModifiedIndex(currentIndex + 1)]
                                   ?.image && (
                                   <div className="absolute inset-0">
@@ -308,17 +333,17 @@ export default function ProjectCarousel() {
                                         ].title || "Next Project"
                                       }
                                       fill
-                                      className="object-cover"
+                                      className="object-contain"
                                       sizes="25vw"
                                       unoptimized={true}
                                       style={{
-                                        objectFit: "cover",
+                                        objectFit: "contain",
                                         objectPosition: "center",
                                       }}
                                     />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10"></div>
                               </div>
                             </div>
                           </>
@@ -345,7 +370,7 @@ export default function ProjectCarousel() {
                         className={`h-2 rounded-full transition-all ${
                           index === currentIndex
                             ? "w-8 bg-blue-500"
-                            : "w-2 bg-gray-600"
+                            : "w-2 bg-gray-600 hover:bg-blue-400 hover:w-4"
                         }`}
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
@@ -360,7 +385,6 @@ export default function ProjectCarousel() {
         </div>
       </section>
 
-      {/* Project Modal */}
       {showModal && selectedProject && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div
@@ -368,7 +392,7 @@ export default function ProjectCarousel() {
             onClick={closeModal}
           ></div>
 
-          <div className="bg-gray-900 rounded-xl overflow-hidden w-full max-w-4xl z-10 relative">
+          <div className="bg-gray-900 rounded-xl w-full max-w-4xl z-10 relative overflow-y-auto h-[70%] md:h-[80%] lg:h-[90%]">
             <button
               onClick={closeModal}
               className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors z-20"
@@ -377,18 +401,18 @@ export default function ProjectCarousel() {
               <X className="h-5 w-5" />
             </button>
 
-            <div className="relative w-full h-[300px] sm:h-[400px]">
+            <div className="relative w-full h-[300px] sm:h-[400px] bg-gray-700">
               {selectedProject.image ? (
                 <Image
                   src={selectedProject.image}
                   alt={selectedProject.title || "Project Image"}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority={true}
                   sizes="(max-width: 768px) 100vw, 800px"
                   unoptimized={true}
                   style={{
-                    objectFit: "cover",
+                    objectFit: "contain",
                     objectPosition: "center",
                   }}
                 />
@@ -427,7 +451,7 @@ export default function ProjectCarousel() {
                       {selectedProject.technologies.map((tech, index) => (
                         <Badge
                           key={index}
-                          className="bg-blue-900/50 text-blue-200 border-blue-500/30"
+                          className="bg-blue-900/50 text-blue-200 border-blue-500/30 hover:bg-blue-800/60 transition-colors"
                         >
                           {tech}
                         </Badge>
@@ -439,7 +463,7 @@ export default function ProjectCarousel() {
                 {selectedProject.link && (
                   <div className="mt-6">
                     <Button
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base px-4 py-1.5 md:py-2 rounded-full transition-colors"
                       onClick={() =>
                         window.open(selectedProject.link, "_blank")
                       }
