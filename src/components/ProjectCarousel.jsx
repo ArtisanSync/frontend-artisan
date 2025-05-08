@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X, Grid2X2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -166,42 +166,42 @@ export default function ProjectCarousel() {
             {!isError && (
               <>
                 <div className="flex items-center justify-end mb-4 gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
-                    onClick={prevSlide}
-                    aria-label="Previous slide"
-                    disabled={
-                      isLoading || projects.length <= 1 || transitioning
-                    }
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
-                    onClick={nextSlide}
-                    aria-label="Next slide"
-                    disabled={
-                      isLoading || projects.length <= 1 || transitioning
-                    }
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {nextClickCount >= 3 && !isLoading && projects.length > 0 && (
-                  <div className="flex justify-end mb-4">
+                  {nextClickCount >= 3 ? (
                     <Link href="/projects">
                       <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 transition-all shadow-lg hover:shadow-blue-500/20">
                         View All Projects
                       </Button>
                     </Link>
-                  </div>
-                )}
+                  ) : (
+                    <>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
+                        onClick={prevSlide}
+                        aria-label="Previous slide"
+                        disabled={
+                          isLoading || projects.length <= 1 || transitioning
+                        }
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
+                        onClick={nextSlide}
+                        aria-label="Next slide"
+                        disabled={
+                          isLoading || projects.length <= 1 || transitioning
+                        }
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
+                </div>
 
                 <div className="overflow-hidden">
                   {isLoading ? (

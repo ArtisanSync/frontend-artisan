@@ -60,7 +60,7 @@ export default function ProjectsPage() {
             Our Projects
           </h1>
           <div className="w-24 h-1 bg-blue-600 rounded-full my-4"></div>
-          <p className="text-gray-400 max-w-2xl">
+          <p className="text-gray-400 max-w-2xl text-justify">
             Explore our complete portfolio of projects showcasing our expertise
             in web development, design, and digital solutions.
           </p>
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
                     <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-blue-400 transition-colors">
                       {project.title || "Untitled Project"}
                     </h3>
-                    <p className="text-gray-400 text-sm line-clamp-2 mb-4">
+                    <p className="text-gray-400 text-sm line-clamp-2 mb-4 text-justify">
                       {project.description || "No description available"}
                     </p>
 
@@ -179,7 +179,7 @@ export default function ProjectsPage() {
                           <DialogTitle className="text-2xl font-bold text-white">
                             {project.title}
                           </DialogTitle>
-                          <DialogDescription className="text-gray-400">
+                          <DialogDescription className="text-gray-400 text-justify">
                             {project.description}
                           </DialogDescription>
                         </DialogHeader>
@@ -209,7 +209,9 @@ export default function ProjectsPage() {
                               <h4 className="text-lg font-semibold text-blue-400 mb-2">
                                 Project Details
                               </h4>
-                              <p className="text-gray-300">{project.details}</p>
+                              <p className="text-gray-300 text-justify">
+                                {project.details}
+                              </p>
                             </div>
                           )}
 
