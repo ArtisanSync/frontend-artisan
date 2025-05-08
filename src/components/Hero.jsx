@@ -6,10 +6,10 @@ import RightBanner from "../../public/right-banner.svg";
 function Hero() {
   return (
     <section
-      className="relative h-[61vh] w-full overflow-hidden pt-16 md:h-full"
+      className="relative h-[430px] w-full overflow-hidden pt-16 md:h-full"
       id="hero"
     >
-      <div className="w-full max-w-[425px] md:max-w-[1920px] 2xl:max-w-[2560px]">
+      <div className="w-full max-w-[550px] md:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="">
           <Image
             className="float-left w-1/2 pt-[35px] md:pt-[50px] md:w-2/3"
