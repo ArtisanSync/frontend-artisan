@@ -59,9 +59,9 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --execution-environment=gen2 \
-            --memory=512Mi \
+            --memory=1Gi \
             --cpu=1 \
-            --no-cpu-throttling \
+            --cpu-boost \
             --min-instances=0 \
             --max-instances=4 \
             --timeout=300s
