@@ -40,7 +40,7 @@ function Footer() {
                 <FaInstagram size={24} />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/artisan-sync-b69081345/"
+                href="https://www.linkedin.com/company/artisansync/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-500 transition-colors duration-300"
