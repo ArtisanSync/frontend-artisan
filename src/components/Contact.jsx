@@ -31,8 +31,17 @@ import {
   User,
   CheckCircle2,
   AlertCircle,
+  X,
 } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -46,7 +55,8 @@ const formSchema = z.object({
 });
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const contactMutation = useContact();
 
   const form = useForm({
@@ -62,10 +72,11 @@ export default function Contact() {
   const onSubmit = async (data) => {
     try {
       await contactMutation.mutateAsync(data);
-      setSubmitted(true);
       form.reset();
+      setShowSuccessAlert(true);
     } catch (error) {
       console.error("Error submitting form:", error);
+      setShowErrorAlert(true);
     }
   };
 
@@ -90,136 +101,35 @@ export default function Contact() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          {contactMutation.isError && (
-            <Alert variant="destructive" className="mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                {contactMutation.error?.response?.data?.message ||
-                  "Something went wrong. Please try again later."}
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {submitted ? (
-            <Card className="border-blue-500/20 bg-blue-950/20 backdrop-blur-sm">
-              <CardContent className="pt-6 pb-6 flex flex-col items-center text-center">
-                <div className="h-16 w-16 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
-                  <CheckCircle2 className="h-8 w-8 text-blue-500" />
-                </div>
-                <CardTitle className="text-xl text-white mb-2">
-                  Message Sent Successfully!
-                </CardTitle>
-                <CardDescription className="text-gray-300 max-w-md">
-                  Thank you for reaching out. We've received your message and
-                  will get back to you shortly.
-                </CardDescription>
-                <Button
-                  className="mt-6 bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => setSubmitted(false)}
+          <Card className="border-white/10 bg-black/60 backdrop-blur-sm shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl text-white">
+                Send us a message
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Fill out the form below and we'll respond as soon as possible.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6"
+                  autoComplete="off"
                 >
-                  Send Another Message
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card className="border-white/10 bg-black/60 backdrop-blur-sm shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-xl text-white">
-                  Send us a message
-                </CardTitle>
-                <CardDescription className="text-gray-400">
-                  Fill out the form below and we'll respond as soon as possible.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                    autoComplete="off"
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem className="min-h-[90px] relative">
-                            <FormLabel className="text-white">Name</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                <Input
-                                  placeholder="Your name"
-                                  className="pl-10 bg-black/30 border-white/10 text-white"
-                                  autoComplete="off"
-                                  {...field}
-                                />
-                              </div>
-                            </FormControl>
-                            <div className="h-5 mt-1">
-                              <FormMessage className="text-red-400 text-xs" />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem className="min-h-[90px] relative">
-                            <FormLabel className="text-white">Email</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                <Input
-                                  placeholder="Your email"
-                                  className="pl-10 bg-black/30 border-white/10 text-white"
-                                  autoComplete="off"
-                                  type="email"
-                                  {...field}
-                                />
-                              </div>
-                            </FormControl>
-                            <div className="h-5 mt-1">
-                              <FormMessage className="text-red-400 text-xs" />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
-                      name="subject"
+                      name="name"
                       render={({ field }) => (
                         <FormItem className="min-h-[90px] relative">
-                          <FormLabel className="text-white">Subject</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Subject of your message"
-                              className="bg-black/30 border-white/10 text-white"
-                              autoComplete="off"
-                              {...field}
-                            />
-                          </FormControl>
-                          <div className="h-5 mt-1">
-                            <FormMessage className="text-red-400 text-xs" />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem className="min-h-[180px] relative">
-                          <FormLabel className="text-white">Message</FormLabel>
+                          <FormLabel className="text-white">Name</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                              <Textarea
-                                placeholder="What would you like to tell us?"
-                                className="pl-10 bg-black/30 border-white/10 text-white min-h-[150px]"
+                              <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                              <Input
+                                placeholder="Your name"
+                                className="pl-10 bg-black/30 border-white/10 text-white"
                                 autoComplete="off"
                                 {...field}
                               />
@@ -231,30 +141,137 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    <Button
-                      type="submit"
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                      disabled={contactMutation.isPending}
-                    >
-                      {contactMutation.isPending ? (
-                        <div className="flex items-center gap-2">
-                          <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-                          <span>Sending...</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <Send className="h-4 w-4" />
-                          <span>Send Message</span>
-                        </div>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="min-h-[90px] relative">
+                          <FormLabel className="text-white">Email</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                              <Input
+                                placeholder="Your email"
+                                className="pl-10 bg-black/30 border-white/10 text-white"
+                                autoComplete="off"
+                                type="email"
+                                {...field}
+                              />
+                            </div>
+                          </FormControl>
+                          <div className="h-5 mt-1">
+                            <FormMessage className="text-red-400 text-xs" />
+                          </div>
+                        </FormItem>
                       )}
-                    </Button>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
-          )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[90px] relative">
+                        <FormLabel className="text-white">Subject</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Subject of your message"
+                            className="bg-black/30 border-white/10 text-white"
+                            autoComplete="off"
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[180px] relative">
+                        <FormLabel className="text-white">Message</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Textarea
+                              placeholder="What would you like to tell us?"
+                              className="pl-10 bg-black/30 border-white/10 text-white min-h-[150px]"
+                              autoComplete="off"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    disabled={contactMutation.isPending}
+                  >
+                    {contactMutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Send className="h-4 w-4" />
+                        <span>Send Message</span>
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
         </div>
       </div>
+
+      <AlertDialog open={showSuccessAlert} onOpenChange={setShowSuccessAlert}>
+        <AlertDialogContent className="bg-blue-950 border-blue-500/20 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              Message Sent Successfully
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              Thank you for reaching out. We've received your message and will
+              get back to you shortly.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction className="bg-blue-600 hover:bg-blue-700 text-white">
+              Close
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showErrorAlert} onOpenChange={setShowErrorAlert}>
+        <AlertDialogContent className="bg-red-950 border-red-500/20 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              Error Sending Message
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              {contactMutation.error?.response?.data?.message ||
+                "Something went wrong. Please try again later."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700 text-white">
+              Close
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

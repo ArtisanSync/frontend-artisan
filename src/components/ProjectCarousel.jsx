@@ -13,7 +13,6 @@ export default function ProjectCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -55,11 +54,9 @@ export default function ProjectCarousel() {
 
     setTransitioning(true);
     setCurrentIndex(index);
-    setIsAutoPlaying(false);
 
     setTimeout(() => {
       setTransitioning(false);
-      setTimeout(() => setIsAutoPlaying(true), 4000);
     }, 300);
   };
 
@@ -92,7 +89,6 @@ export default function ProjectCarousel() {
   const openModal = (project) => {
     setSelectedProject(project);
     setShowModal(true);
-    setIsAutoPlaying(false);
     document.body.style.overflow = "hidden";
   };
 
@@ -100,23 +96,7 @@ export default function ProjectCarousel() {
     setShowModal(false);
     setSelectedProject(null);
     document.body.style.overflow = "";
-    setTimeout(() => setIsAutoPlaying(true), 1000);
   };
-
-  useEffect(() => {
-    let interval;
-    if (isAutoPlaying && projects.length > 0 && !transitioning && !showModal) {
-      interval = setInterval(() => {
-        nextSlide();
-      }, 5000);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [currentIndex, isAutoPlaying, projects.length, transitioning, showModal]);
 
   useEffect(() => {
     const handleEscKey = (e) => {
@@ -177,7 +157,7 @@ export default function ProjectCarousel() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
+                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-blue-600 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center cursor-pointer"
                         onClick={prevSlide}
                         aria-label="Previous slide"
                         disabled={
@@ -190,7 +170,7 @@ export default function ProjectCarousel() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-black/70 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center"
+                        className="bg-black/50 text-blue-400 border-blue-500/30 hover:bg-blue-600 hover:text-blue-300 rounded-full h-8 w-8 flex items-center justify-center cursor-pointer"
                         onClick={nextSlide}
                         aria-label="Next slide"
                         disabled={
@@ -234,10 +214,10 @@ export default function ProjectCarousel() {
                         {projects && projects.length > 0 ? (
                           <>
                             <div
-                              className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
+                              className="absolute left-0 w-1/4 h-full transform -translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group md:block"
                               onClick={prevSlide}
                             >
-                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-60 group-hover:blur-[0.5px] group-hover:scale-95 transition-all duration-300">
+                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-100 group-hover:blur-[0px] group-hover:scale-95 transition-all duration-300">
                                 {projects[getModifiedIndex(currentIndex - 1)]
                                   ?.image && (
                                   <div className="absolute inset-0">
@@ -263,7 +243,7 @@ export default function ProjectCarousel() {
                                     />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/50 group-hover:to-black/5"></div>
                               </div>
                             </div>
 
@@ -314,10 +294,10 @@ export default function ProjectCarousel() {
                             </div>
 
                             <div
-                              className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group hidden md:block"
+                              className="absolute right-0 w-1/4 h-full transform translate-x-1/4 z-10 transition-all duration-300 ease-out cursor-pointer group md:block"
                               onClick={nextSlide}
                             >
-                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-60 group-hover:blur-[0.5px] group-hover:scale-95 transition-all duration-300">
+                              <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-100 group-hover:blur-[0px] group-hover:scale-95 transition-all duration-300">
                                 {projects[getModifiedIndex(currentIndex + 1)]
                                   ?.image && (
                                   <div className="absolute inset-0">
@@ -343,7 +323,7 @@ export default function ProjectCarousel() {
                                     />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/50 group-hover:to-black/5"></div>
                               </div>
                             </div>
                           </>
