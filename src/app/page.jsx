@@ -4,6 +4,7 @@ import FounderSection from "@/components/FounderSection";
 import Service from "@/components/Service";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import ProjectCarousel from "@/components/ProjectCarousel";
+import Contact from "@/components/Contact";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
         <TeamSection />
       </div>
       <ServicesAccordion />
+      <Contact />
     </>
   );
 };

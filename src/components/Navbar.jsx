@@ -60,7 +60,7 @@ function Navbar() {
     { id: "service", label: "SERVICES" },
     { id: "projects", label: "PROJECTS" },
     { id: "team", label: "TEAM" },
-    { id: "hero", label: "CONTACT" },
+    { id: "contact", label: "CONTACT" },
   ];
 
   return (

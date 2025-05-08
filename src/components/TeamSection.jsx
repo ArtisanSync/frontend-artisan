@@ -108,7 +108,7 @@ const TeamSection = () => {
                         {member.title}
                       </CardDescription>
                       <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
-                      <p className="text-gray-300 text-sm mt-3">
+                      <p className="text-gray-300 text-sm mt-3 text-justify">
                         {member.description}
                       </p>
                     </div>
