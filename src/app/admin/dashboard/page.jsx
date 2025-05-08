@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { useProjects } from "@/hooks/use-projects";
-import { useServices } from "@/hooks/use-services";
-import { useTeams } from "@/hooks/use-teams";
+import { useProjectsAdmin } from "@/hooks/use-projects";
+import { useServicesAdmin } from "@/hooks/use-services";
+import { useTeamsAdmin } from "@/hooks/use-teams";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 
 export default function Dashboard() {
-  const { data: projects, isLoading: isLoadingProjects } = useProjects();
-  const { data: services, isLoading: isLoadingServices } = useServices();
-  const { data: teamMembers, isLoading: isLoadingTeam } = useTeams();
+  const { data: projects, isLoading: isLoadingProjects } = useProjectsAdmin();
+  const { data: services, isLoading: isLoadingServices } = useServicesAdmin();
+  const { data: teamMembers, isLoading: isLoadingTeam } = useTeamsAdmin();
   const { auth } = useAuth();
 
   const isLoading = isLoadingProjects || isLoadingServices || isLoadingTeam;
@@ -19,17 +19,17 @@ export default function Dashboard() {
   const stats = [
     {
       name: "Projects",
-      count: Array.isArray(projects?.data) ? projects.data.length : 0,
+      count: Array.isArray(projects) ? projects.length : 0,
       path: "/admin/projects",
     },
     {
       name: "Services",
-      count: Array.isArray(services?.data) ? services.data.length : 0,
+      count: Array.isArray(services) ? services.length : 0,
       path: "/admin/services",
     },
     {
       name: "Team Members",
-      count: Array.isArray(teamMembers?.data) ? teamMembers.data.length : 0,
+      count: Array.isArray(teamMembers) ? teamMembers.length : 0,
       path: "/admin/team",
     },
   ];
@@ -71,8 +71,8 @@ export default function Dashboard() {
                 Recent Projects
               </h2>
               <div className="space-y-2">
-                {Array.isArray(projects?.data) && projects.data.length > 0 ? (
-                  projects.data.slice(0, 5).map((project) => (
+                {Array.isArray(projects) && projects.length > 0 ? (
+                  projects.slice(0, 5).map((project) => (
                     <Link
                       href={`/admin/projects/${project.id}`}
                       key={project.id || `project-${Math.random()}`}
@@ -106,8 +106,8 @@ export default function Dashboard() {
                 Recent Services
               </h2>
               <div className="space-y-2">
-                {Array.isArray(services?.data) && services.data.length > 0 ? (
-                  services.data.slice(0, 5).map((service) => (
+                {Array.isArray(services) && services.length > 0 ? (
+                  services.slice(0, 5).map((service) => (
                     <Link
                       href={`/admin/services/${service.id}`}
                       key={service.id || `service-${Math.random()}`}
