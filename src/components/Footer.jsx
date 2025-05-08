@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { images } from "@/constants/images";
 import { Separator } from "@radix-ui/react-separator";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -29,6 +30,24 @@ function Footer() {
               Transforming ideas into exceptional digital experiences with
               precision and artistry.
             </p>
+            <div className="flex space-x-4 mt-6">
+              <Link
+                href="https://www.instagram.com/artisan_sync/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-pink-500 transition-colors duration-300"
+              >
+                <FaInstagram size={24} />
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/artisan-sync-b69081345/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-500 transition-colors duration-300"
+              >
+                <FaLinkedin size={24} />
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-col">
