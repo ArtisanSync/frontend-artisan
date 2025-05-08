@@ -25,12 +25,9 @@ function ServiceList({ services }) {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-2 md:gap-3 lg:gap-x-3 lg:gap-y-6">
+    <div className="flex flex-wrap justify-center gap-4">
       {services.map((service) => (
-        <div
-          key={service._id}
-          className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-8px)]"
-        >
+        <div key={service._id} className="w-full md:w-1/2 lg:w-1/3 p-2">
           <Card className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 flex flex-col h-full">
             <CardContent className="py-[20px] px-[24px] flex flex-col flex-grow justify-between h-full">
               <div className="flex flex-col h-full">
@@ -38,14 +35,10 @@ function ServiceList({ services }) {
                   {service.number}
                 </p>
                 <h4 className="text-xl font-semibold text-blue-400 mb-2 text-center">
-                  {service.title.length > 19
-                    ? service.title.slice(0, 19) + "..."
-                    : service.title}
+                  {service.title}
                 </h4>
                 <p className="text-[16px] leading-relaxed text-white text-justify hyphens-auto flex-grow">
-                  {service.description.length > 150
-                    ? service.description.slice(0, 150) + "....."
-                    : service.description}
+                  {service.description}
                 </p>
               </div>
             </CardContent>
@@ -92,16 +85,16 @@ export default function Service() {
           </h2>
         </div>
 
-        <div className="w-full">
+        <div className="w-full max-w-full mx-auto">
           {isLoading ? (
-            <div className="flex flex-wrap justify-center gap-2 md:gap-3 lg:gap-x-3 lg:gap-y-6">
-              <div className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-8px)]">
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
                 <ServiceSkeleton />
               </div>
-              <div className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-8px)]">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
                 <ServiceSkeleton />
               </div>
-              <div className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-8px)]">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
                 <ServiceSkeleton />
               </div>
             </div>
