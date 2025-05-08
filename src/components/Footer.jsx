@@ -7,6 +7,19 @@ import { FaInstagram, FaLinkedin } from "react-icons/fa";
 function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const yOffset = -80;
+      const y =
+        section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <footer className="bg-[#000000]">
       <div className="container px-4 py-10 md:py-16">
@@ -56,20 +69,20 @@ function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link
-                  href="#"
+                <button
+                  onClick={() => scrollToSection("hero")}
                   className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   About Us
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  href="#"
+                <button
+                  onClick={() => scrollToSection("team")}
                   className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   Our Team
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -80,12 +93,12 @@ function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link
-                  href="#"
+                <button
+                  onClick={() => scrollToSection("hero")}
                   className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   Web Development
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
