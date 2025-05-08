@@ -27,7 +27,10 @@ function ServiceList({ services }) {
   return (
     <div className="flex flex-wrap justify-center gap-4">
       {services.map((service) => (
-        <div key={service._id} className="w-full md:w-1/2 lg:w-1/3 p-2">
+        <div
+          key={service._id}
+          className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)] 2xl:w-[calc(25%-16px)]"
+        >
           <Card className="bg-black/60 border-none rounded-xl shadow-lg hover:shadow-blue-500/30 flex flex-col h-full">
             <CardContent className="py-[20px] px-[24px] flex flex-col flex-grow justify-between h-full">
               <div className="flex flex-col h-full">
@@ -88,13 +91,13 @@ export default function Service() {
         <div className="w-full max-w-full mx-auto">
           {isLoading ? (
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
                 <ServiceSkeleton />
               </div>
-              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
                 <ServiceSkeleton />
               </div>
-              <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+              <div className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)]">
                 <ServiceSkeleton />
               </div>
             </div>
