@@ -17,7 +17,7 @@ const TeamSection = () => {
       id="team"
       className="w-full py-12 sm:py-16 md:py-20 from-background to-muted/30 bg-[#10101E]"
     >
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 mx-auto md:px-6 ">
         <div className="flex flex-col items-center justify-center space-y-3 text-center mb-10 sm:mb-16">
           <Badge
             variant="outline"
@@ -35,7 +35,7 @@ const TeamSection = () => {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-10">
             {[1, 2, 3, 4].map((item) => (
               <Card
                 key={item}
@@ -76,7 +76,7 @@ const TeamSection = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4 gap-6  mt-10">
             {teamMembers.map((member) => (
               <Card
                 key={member._id}
@@ -108,7 +108,7 @@ const TeamSection = () => {
                         {member.title}
                       </CardDescription>
                       <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
-                      <p className="text-gray-300 text-sm mt-3 text-justify">
+                      <p className="text-gray-300 text-sm mt-3">
                         {member.description}
                       </p>
                     </div>
