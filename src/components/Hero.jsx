@@ -35,7 +35,7 @@ function Hero() {
         </div>
       </div>
 
-      <div className="absolute z-10 mx-auto px-4 sm:px-6 lg:px-8 p-16 sm:pt-24 md:pt-32 lg:pt-40 xl:px-[150px] 2xl:ms-auto">
+      <div className="absolute z-10 mx-auto px-4 sm:px-6 lg:px-8 p-16 sm:pt-24 md:pt-32 lg:pt-40 xl:px-[150px] 2xl:ms-auto 2xl:pt-[15%] 2xl:ps-[15%]">
         <div className="max-w-3xl">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold mb-4 sm:mb-6 md:mb-8 text-white capitalize">
             Welcome to Artisan Sync
