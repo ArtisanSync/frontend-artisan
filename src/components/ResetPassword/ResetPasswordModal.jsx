@@ -1,9 +1,15 @@
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/use-auth";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import OtpVerificationForm from "./OtpVerificationForm";
 import NewPasswordForm from "./NewPasswordForm";
 import ResetSuccessView from "./ResetSuccessView";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogOverlay,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 export default function ResetPasswordModal({ isOpen, onClose }) {
   const { auth, resetState } = useAuth();
@@ -45,7 +51,8 @@ export default function ResetPasswordModal({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-black/90 text-white border-white/10 p-6 sm:max-w-md backdrop-blur-lg fixed z-50">
+      <DialogOverlay className="bg-black/20 backdrop-blur-xs" />
+      <DialogContent className="bg-black/90 text-white border-white/20 p-6 sm:max-w-md backdrop-blur-md shadow-2xl fixed z-50">
         <DialogTitle className="text-xl font-semibold text-center mb-4">
           {getDialogTitle()}
         </DialogTitle>
