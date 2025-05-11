@@ -88,13 +88,16 @@ function Footer() {
           </div>
 
           <div className="flex flex-col">
-            <h3 className="font-semibold text-sm uppercase mb-4 tracking-wider text-gray-300">
+            <h3
+              className="font-semibold text-sm uppercase mb-4 tracking-wider text-gray-300"
+              onClick={() => scrollToSection("service")}
+            >
               Services
             </h3>
             <ul className="space-y-3">
               <li>
                 <button
-                  onClick={() => scrollToSection("hero")}
+                  onClick={() => scrollToSection("service")}
                   className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
                 >
                   Web Development
