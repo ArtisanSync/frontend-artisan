@@ -94,9 +94,9 @@ export default function Contact() {
                 <div>
                   <h3 className="font-semibold mb-1 text-white">Address:</h3>
                   <p className="text-gray-400">
-                    Jl. Teknologi No. 88, Kel. Inovasitek, Kec. Digitalisasi,
+                    Kalimantan Timur, Samarinda, Samarinda Kota
                     <br />
-                    Jakarta Selatan, DKI Jakarta 12560
+                    Jln Wahidhasyim 75119
                   </p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function Contact() {
                     href={`tel:+${phoneNumber}`}
                     className="text-gray-400 hover:text-blue-400 transition-colors"
                   >
-                    +62 822-5662-7675
+                    +62 821-5418-2046
                   </a>
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-green-400 transition-colors"
                   >
-                    +62 822-5662-7675
+                    +62 821-5418-2046
                   </a>
                 </div>
               </div>
