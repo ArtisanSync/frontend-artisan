@@ -6,9 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Loader2, AlertCircle } from "lucide-react";
 import ResetPasswordModal from "./ResetPassword/ResetPasswordModal";
 import { useAuth } from "@/hooks/use-auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function AuthForm() {
   const router = useRouter();
@@ -17,8 +26,10 @@ export default function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
-  const { login, auth } = useAuth();
+  const { login, auth, clearError } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,10 +41,21 @@ export default function AuthForm() {
         router.push("/admin/dashboard");
       } catch (error) {
         console.error("Login error:", error);
+        setLoginError(
+          error.response?.data?.message ||
+            "Authentication failed. Please check your credentials."
+        );
+        setShowErrorDialog(true);
       } finally {
         setIsLoggingIn(false);
       }
     }
+  };
+
+  const closeErrorDialog = () => {
+    setShowErrorDialog(false);
+    setLoginError("");
+    clearError();
   };
 
   return (
@@ -100,12 +122,6 @@ export default function AuthForm() {
                 Forgot password?
               </button>
             </div>
-            {auth.error && (
-              <div className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 p-3 rounded-md">
-                {auth.error.message ||
-                  "Invalid login credentials. Please try again."}
-              </div>
-            )}
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
@@ -128,6 +144,34 @@ export default function AuthForm() {
         isOpen={isResetModalOpen}
         onClose={() => setIsResetModalOpen(false)}
       />
+
+      <AlertDialog
+        open={showErrorDialog}
+        onOpenChange={(open) => {
+          if (!open) closeErrorDialog();
+        }}
+      >
+        <AlertDialogContent className="bg-red-950 border-red-500/20 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              Authentication Failed
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              {loginError ||
+                "An error occurred during login. Please try again."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={closeErrorDialog}
+            >
+              Close
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

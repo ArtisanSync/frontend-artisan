@@ -26,9 +26,6 @@ const isTokenValid = (token) => {
 
 const handleInvalidToken = () => {
   Cookies.remove("token");
-  if (typeof window !== "undefined") {
-    window.location.href = "/sync";
-  }
 };
 
 api.interceptors.request.use(
@@ -53,9 +50,31 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
+      const status = error.response.status;
+
+      if (status === 401) {
         handleInvalidToken();
       }
+
+      if (status >= 500) {
+        error.response.data = {
+          message: "Server error occurred. Please try again later.",
+          ...error.response.data,
+        };
+      }
+    } else if (error.request) {
+      error.response = {
+        data: {
+          message:
+            "No response received from server. Please check your connection.",
+        },
+      };
+    } else {
+      error.response = {
+        data: {
+          message: "An unexpected error occurred. Please try again.",
+        },
+      };
     }
     return Promise.reject(error);
   }

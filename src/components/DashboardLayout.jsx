@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }) {
 
   const handleLogout = () => {
     logout();
-    router.push("/sync");
+    router.push("/");
   };
 
   const navItems = [
