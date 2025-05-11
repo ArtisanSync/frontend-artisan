@@ -25,7 +25,7 @@ const TeamSection = () => {
           >
             Our Experts
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent">
             Meet Our Team
           </h2>
           <div className="w-16 h-1 bg-primary rounded-full my-3"></div>
