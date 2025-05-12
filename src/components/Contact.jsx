@@ -53,7 +53,7 @@ export default function Contact() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const contactMutation = useContact();
-  const phoneNumber = "6282256627675";
+  const phoneNumber = "6282154182046";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
