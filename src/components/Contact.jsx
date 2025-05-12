@@ -77,7 +77,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="w-full py-16 md:py-24 md:px-6">
+    <section id="contact" className="w-full my-16 md:my-24 md:px-6">
       <div className="container mx-auto max-w-7xl sm:px-4 px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="flex flex-col justify-start">

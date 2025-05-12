@@ -23,7 +23,7 @@ function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ["hero", "service", "projects", "team"];
+      const sections = ["hero", "service", "projects", "team", "contact"];
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
         if (!element) return false;
