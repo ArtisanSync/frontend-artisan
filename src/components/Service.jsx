@@ -80,7 +80,7 @@ export default function Service() {
   const services = data?.data || [];
 
   return (
-    <section className="text-white pt-4 sm:pt-6 md:pt-8" id="service">
+    <section className="text-white mt-4 sm:mt-6 md:mt-8" id="service">
       <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-screen-2xl">
         <div className="text-center mb-8 sm:mb-10">
           <h2 className="text-[#2563EB] text-2xl md:text-[32px] font-bold">
