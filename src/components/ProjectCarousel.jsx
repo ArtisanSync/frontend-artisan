@@ -113,7 +113,7 @@ export default function ProjectCarousel() {
     <>
       <section
         id="projects"
-        className="w-full py-16 md:py-24 flex items-center justify-center"
+        className="w-full my-16 md:my-24 flex items-center justify-center"
       >
         <div className="container px-4 md:px-6 mx-auto flex flex-col items-center">
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-10 md:mb-16 max-w-3xl mx-auto">

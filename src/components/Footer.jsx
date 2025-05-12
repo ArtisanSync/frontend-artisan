@@ -22,7 +22,7 @@ function Footer() {
 
   return (
     <footer className="bg-[#000000]">
-      <div className="container px-4 py-10 md:py-16">
+      <div className="px-4 py-10 md:py-16">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-between">
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
@@ -43,6 +43,7 @@ function Footer() {
               Transforming ideas into exceptional digital experiences with
               precision and artistry.
             </p>
+
             <div className="flex space-x-4 mt-6">
               <Link
                 href="https://www.instagram.com/artisan_sync/"
@@ -65,43 +66,73 @@ function Footer() {
 
           <div className="flex flex-col">
             <h3 className="font-semibold text-sm uppercase mb-4 tracking-wider text-gray-300">
-              Company
+              Navigation
             </h3>
             <ul className="space-y-3">
               <li>
                 <button
                   onClick={() => scrollToSection("hero")}
-                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex cursor-pointer"
                 >
                   About Us
                 </button>
               </li>
               <li>
                 <button
+                  onClick={() => scrollToSection("service")}
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex cursor-pointer"
+                >
+                  Service
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("projects")}
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex cursor-pointer"
+                >
+                  Project
+                </button>
+              </li>
+
+              <li>
+                <button
                   onClick={() => scrollToSection("team")}
-                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex cursor-pointer"
                 >
                   Our Team
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("web-services")}
+                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex cursor-pointer"
+                >
+                  Web Development
                 </button>
               </li>
             </ul>
           </div>
 
           <div className="flex flex-col">
-            <h3
-              className="font-semibold text-sm uppercase mb-4 tracking-wider text-gray-300"
-              onClick={() => scrollToSection("service")}
-            >
-              Services
+            <h3 className="font-semibold text-sm uppercase mb-4 tracking-wider text-gray-300">
+              Contact
             </h3>
             <ul className="space-y-3">
               <li>
-                <button
-                  onClick={() => scrollToSection("service")}
-                  className="text-sm text-gray-400 hover:text-blue-500/50 hover:translate-x-1 transition-all duration-300 inline-flex"
-                >
-                  Web Development
-                </button>
+                <p className="text-sm max-w-xs text-gray-300 leading-relaxed">
+                  Address: Kalimantan Timur, Samarinda, Samarinda Kota Jln
+                  Wahidhasyim 75119
+                </p>
+              </li>
+              <li>
+                <p className="text-sm max-w-xs text-gray-300 leading-relaxed">
+                  Mail: syncartisan@gmail.com
+                </p>
+              </li>
+              <li>
+                <p className="text-sm max-w-xs text-gray-300 leading-relaxed">
+                  Phone/Wa : +62 821-5418-2046
+                </p>
               </li>
             </ul>
           </div>

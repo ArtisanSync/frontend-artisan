@@ -15,7 +15,7 @@ const TeamSection = () => {
   return (
     <section
       id="team"
-      className="w-full py-12 sm:py-16 md:py-20 from-background to-muted/30 bg-[#10101E]"
+      className="w-full my-12 sm:my-16 md:my-20 from-background to-muted/30 bg-[#10101E]"
     >
       <div className="container px-4 mx-auto md:px-6 ">
         <div className="flex flex-col items-center justify-center space-y-3 text-center mb-10 sm:mb-16">
