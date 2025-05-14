@@ -4,8 +4,9 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useTeams } from "@/hooks/use-teams";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Link } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FaLinkedin } from "react-icons/fa";
 
 const TeamSection = () => {
   const { data, isLoading, isError, error } = useTeams();
@@ -49,6 +50,7 @@ const TeamSection = () => {
                       <Skeleton className="h-4 w-1/2 rounded-md mb-4" />
                       <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
                       <Skeleton className="h-16 w-full rounded-md mt-3" />
+                      <Skeleton className="h-[24px] mt-5 w-[24px]" />
                     </div>
                   </CardContent>
                 </div>
@@ -76,47 +78,141 @@ const TeamSection = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4 gap-6  mt-10">
-            {teamMembers.map((member) => (
-              <Card
-                key={member._id}
-                className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
-              >
-                <div className="flex flex-col h-full">
-                  <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
-                    <Image
-                      src={member.photo}
-                      alt={member.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110 rounded-t-2xl"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      priority
-                    />
-                    <div className="absolute bottom-4 left-4 z-20">
-                      <Badge className="bg-primary/80 text-white text-xs font-medium py-1 px-2.5">
-                        {member.title}
-                      </Badge>
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
+            {teamMembers.map((member) => {
+              let linkedinUrl = "";
+
+              // Hardcode berdasarkan nama atau ID
+              https: if (member.name === "Naufal Annafi")
+                linkedinUrl =
+                  "https://www.linkedin.com/in/naufal-annafi-bb623935b/";
+              if (member.name === "Wahyu Hary Saputra Sembiring")
+                linkedinUrl = "https://www.linkedin.com/in/wahyuhary/";
+              if (member.name === "Yogi Efani Yancandra")
+                linkedinUrl = "https://www.linkedin.com/in/yogiefaniyancandra/";
+              if (member.name === "Tegar Alfa Rizzi")
+                linkedinUrl = "//www.linkedin.com/in/tegar-alfa-rizzi/";
+              if (member.name === "Rafly Aziz Abdillah")
+                linkedinUrl = "https://www.linkedin.com/in/raflyazizabdillah/";
+              if (member.name === "Wahyu Pinanda Ginting")
+                linkedinUrl = "https://www.linkedin.com/in/wahyupinanda/";
+              if (member.name === "Gizka Triwulandari")
+                linkedinUrl =
+                  "https://www.linkedin.com/in/gizka-triwulandari-58aa01255/";
+
+              return (
+                <Card
+                  key={member._id}
+                  className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
+                >
+                  <div className="flex flex-col h-full">
+                    <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl hover:scale-105 lg:hover:scale-110 transition-transform duration-700 ">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+                      <Image
+                        src={member.photo}
+                        alt={member.name}
+                        fill
+                        className="object-cover rounded-t-2xl"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        priority
+                      />
+                      <div className="absolute bottom-4 left-4 z-20">
+                        <Badge className="bg-primary/80 text-white text-xs font-medium py-1 px-2.5">
+                          {member.title}
+                        </Badge>
+                      </div>
                     </div>
+                    <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#161630] rounded-b-2xl">
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white">
+                          {member.name}
+                        </h3>
+                        <CardDescription className="text-sm sm:text-md font-medium text-white/55 hidden sm:block">
+                          {member.title}
+                        </CardDescription>
+                        <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
+                        <p className="text-gray-300 text-sm mt-3 text-justify">
+                          {member.description}
+                        </p>
+                      </div>
+                      <div className="mt-5 flex">
+                        {linkedinUrl && (
+                          <a
+                            href={linkedinUrl}
+                            alt={`LinkedIn ${member.name}`}
+                            className="text-gray-400 hover:text-blue-500 transition-colors duration-300 hover:scale-100"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaLinkedin
+                              className="hover:scale-115 duration-200"
+                              size={24}
+                            />
+                          </a>
+                        )}
+                      </div>
+                    </CardContent>
                   </div>
-                  <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#161630] rounded-b-2xl">
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white">
-                        {member.name}
-                      </h3>
-                      <CardDescription className="text-sm sm:text-md font-medium text-white/55 hidden sm:block">
-                        {member.title}
-                      </CardDescription>
-                      <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
-                      <p className="text-gray-300 text-sm mt-3 text-justify">
-                        {member.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
+          // <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4 gap-6  mt-10">
+          //   {teamMembers.map((member) => (
+          //     let linkedinUrl = "";
+          //     <Card
+          //       key={member._id}
+          //       className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
+          //     >
+          //       <div className="flex flex-col h-full">
+          //         <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl hover:scale-105 lg:hover:scale-110 transition-transform duration-700 ">
+          //           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
+          //           <Image
+          //             src={member.photo}
+          //             alt={member.name}
+          //             fill
+          //             className="object-cover   rounded-t-2xl"
+          //             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          //             priority
+          //           />
+          //           <div className="absolute bottom-4 left-4 z-20">
+          //             <Badge className="bg-primary/80 text-white text-xs font-medium py-1 px-2.5">
+          //               {member.title}
+          //             </Badge>
+          //           </div>
+          //         </div>
+          //         <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#161630] rounded-b-2xl">
+          //           <div>
+          //             <h3 className="text-xl sm:text-2xl font-bold text-white">
+          //               {member.name}
+          //             </h3>
+          //             <CardDescription className="text-sm sm:text-md font-medium text-white/55 hidden sm:block">
+          //               {member.title}
+          //             </CardDescription>
+          //             <div className="h-0.5 w-12 bg-white/40 my-3 rounded-full"></div>
+          //             <p className="text-gray-300 text-sm mt-3 text-justify">
+          //               {member.description}
+          //             </p>
+          //           </div>
+          //           <div className="mt-5 flex">
+          //             <a
+          //               // nanti ini akan dinamis mengikuti API
+          //               href="https://www.linkedin.com/company/artisansync/"
+          //               alt="LinkedIn Artisan Sync"
+          //               className=" text-gray-400 hover:text-blue-500 transition-colors duration-300 hover:scale-100"
+          //               target="_blank"
+          //             >
+          //               <FaLinkedin
+          //                 className="hover:scale-115 duration-200"
+          //                 size={24}
+          //               />
+          //             </a>
+          //           </div>
+          //         </CardContent>
+          //       </div>
+          //     </Card>
+          //   ))}
+          // </div>
         )}
       </div>
     </section>
