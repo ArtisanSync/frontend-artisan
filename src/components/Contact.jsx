@@ -163,17 +163,17 @@ export default function Contact() {
                     href="https://www.instagram.com/artisan_sync/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-blue-500 transition-colors"
+                    className="text-gray-400 hover:text-pink-500 transition-colors duration-300"
                   >
-                    <FaInstagram className="h-6 w-6" />
+                    <FaInstagram className="h-6 w-6 hover:scale-115 duration-200" />
                   </a>
                   <a
                     href="https://www.linkedin.com/company/artisansync/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-blue-500 transition-colors"
+                    className="text-gray-400 hover:text-blue-500 transition-colors duration-300"
                   >
-                    <FaLinkedin className="h-6 w-6" />
+                    <FaLinkedin className="h-6 w-6 hover:scale-115 duration-200" />
                   </a>
                 </div>
               </div>
