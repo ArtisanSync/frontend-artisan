@@ -51,15 +51,21 @@ function Footer() {
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-pink-500 transition-colors duration-300"
               >
-                <FaInstagram size={24} />
+                <FaInstagram
+                  size={24}
+                  className="hover:scale-115 duration-200"
+                />
               </Link>
               <Link
                 href="https://www.linkedin.com/company/artisansync/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors duration-300"
+                className="text-gray-400 hover:text-blue-500 transition-colors duration-300 "
               >
-                <FaLinkedin size={24} />
+                <FaLinkedin
+                  size={24}
+                  className="hover:scale-115 duration-200"
+                />
               </Link>
             </div>
           </div>
