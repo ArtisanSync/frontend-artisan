@@ -59,12 +59,12 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --execution-environment=gen2 \
-            --memory=1Gi \
-            --cpu=1 \
+            --memory=2Gi \
+            --cpu=2 \
             --cpu-boost \
-            --min-instances=0 \
+            --min-instances=1 \
             --max-instances=4 \
-            --timeout=300s
+            --timeout=60s
 
       - name: Log deployment URL
         run: |
