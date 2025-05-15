@@ -36,8 +36,10 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg mb-6">
-        <h1 className="text-2xl font-bold text-white mb-4">Admin Dashboard</h1>
+      <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg mb-4 md:mb-6">
+        <h1 className="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4">
+          Admin Dashboard
+        </h1>
         <p className="text-gray-300 mb-1">
           Welcome to your ArtisanSync dashboard!
         </p>
@@ -49,25 +51,27 @@ export default function Dashboard() {
       </div>
 
       {isLoading ? (
-        <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
+        <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
           <p className="text-white">Loading dashboard data...</p>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
             {stats.map((stat) => (
               <Link href={stat.path} key={stat.name}>
-                <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg hover:bg-white/15 transition">
+                <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg hover:bg-white/15 transition">
                   <h2 className="text-white/70 text-lg">{stat.name}</h2>
-                  <p className="text-white text-3xl font-bold">{stat.count}</p>
+                  <p className="text-white text-2xl md:text-3xl font-bold">
+                    {stat.count}
+                  </p>
                 </div>
               </Link>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-bold text-white mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+              <h2 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
                 Recent Projects
               </h2>
               <div className="space-y-2">
@@ -77,7 +81,7 @@ export default function Dashboard() {
                       href={`/admin/projects/${project.id}`}
                       key={project.id || `project-${Math.random()}`}
                     >
-                      <div className="p-3 hover:bg-white/10 rounded-md transition">
+                      <div className="p-2 md:p-3 hover:bg-white/10 rounded-md transition">
                         <h3 className="text-white font-medium">
                           {project.title}
                         </h3>
@@ -91,7 +95,7 @@ export default function Dashboard() {
                   <p className="text-white/60 py-3">No projects yet.</p>
                 )}
               </div>
-              <div className="mt-4">
+              <div className="mt-3 md:mt-4">
                 <Link
                   href="/admin/projects"
                   className="text-blue-400 hover:text-blue-300"
@@ -101,8 +105,8 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-bold text-white mb-4">
+            <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+              <h2 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
                 Recent Services
               </h2>
               <div className="space-y-2">
@@ -112,7 +116,7 @@ export default function Dashboard() {
                       href={`/admin/services/${service.id}`}
                       key={service.id || `service-${Math.random()}`}
                     >
-                      <div className="p-3 hover:bg-white/10 rounded-md transition">
+                      <div className="p-2 md:p-3 hover:bg-white/10 rounded-md transition">
                         <h3 className="text-white font-medium">
                           {service.title || service.name}
                         </h3>
@@ -126,7 +130,7 @@ export default function Dashboard() {
                   <p className="text-white/60 py-3">No services yet.</p>
                 )}
               </div>
-              <div className="mt-4">
+              <div className="mt-3 md:mt-4">
                 <Link
                   href="/admin/services"
                   className="text-blue-400 hover:text-blue-300"

@@ -16,8 +16,8 @@ export default function TeamMemberDetailPage() {
     title: "",
     description: "",
   });
-  const [photoFile, setPhotoFile] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState("");
+  const [mediaFile, setMediaFile] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function TeamMemberDetailPage() {
     const fetchTeamMember = async () => {
       try {
         const response = await TeamService.getTeamMemberById(id);
-        console.log("Team member data received:", response); // Tambahkan log untuk debug
+        console.log("Team member data received:", response);
 
         // Pastikan kita mengambil data dari struktur yang benar
         const memberData = response.data || response; // API mengembalikan { success: true, data: {...} }
@@ -48,10 +48,23 @@ export default function TeamMemberDetailPage() {
           description: memberData.description || "",
         });
 
-        if (memberData.photoUrl || memberData.photo || memberData.image) {
-          setPhotoPreview(
-            memberData.photoUrl || memberData.photo || memberData.image
-          );
+        // Handle untuk gambar/video dari struktur baru (media) atau lama (photo)
+        if (memberData.media && memberData.media.url) {
+          setMediaPreview({
+            url: memberData.media.url,
+            type: memberData.media.type || "image",
+            fileId: memberData.media.fileId,
+          });
+        } else if (
+          memberData.photoUrl ||
+          memberData.photo ||
+          memberData.image
+        ) {
+          setMediaPreview({
+            url: memberData.photoUrl || memberData.photo || memberData.image,
+            type: "image",
+            fileId: memberData.photoFileId,
+          });
         }
 
         setIsLoading(false);
@@ -73,15 +86,45 @@ export default function TeamMemberDetailPage() {
     });
   };
 
-  const handlePhotoChange = (e) => {
+  const handleMediaChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPhotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setMediaFile(file);
+
+      // Deteksi tipe file
+      const fileType = file.type.startsWith("image/") ? "image" : "video";
+
+      if (fileType === "image") {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setMediaPreview({
+            url: reader.result,
+            type: "image",
+            name: file.name,
+          });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Untuk video, gunakan URL.createObjectURL
+        const videoUrl = URL.createObjectURL(file);
+        setMediaPreview({
+          url: videoUrl,
+          type: "video",
+          name: file.name,
+        });
+      }
+    }
+  };
+
+  const handleDeleteMedia = () => {
+    if (window.confirm("Are you sure you want to delete this media?")) {
+      setMediaFile(null);
+      setMediaPreview(null);
+
+      // Jika sedang mengedit anggota tim dan ada media, tandai untuk dihapus
+      if (!isNewMember && teamMember) {
+        setFormData({ ...formData, deleteMedia: "true" });
+      }
     }
   };
 
@@ -95,8 +138,16 @@ export default function TeamMemberDetailPage() {
       formDataObj.append("title", formData.title);
       formDataObj.append("description", formData.description);
 
-      if (photoFile) {
-        formDataObj.append("photo", photoFile);
+      // Handle for media file
+      if (mediaFile) {
+        formDataObj.append("media", mediaFile);
+
+        // Set content type header in service if it's a video
+        if (mediaFile.type.startsWith("video/")) {
+          formDataObj.append("mediaType", "video");
+        }
+      } else if (formData.deleteMedia) {
+        formDataObj.append("deleteMedia", "true");
       }
 
       if (isNewMember) {
@@ -109,6 +160,7 @@ export default function TeamMemberDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["teams"] });
       router.push("/admin/team");
     } catch (err) {
+      console.error("Error saving team member:", err);
       setError("Failed to save team member");
     } finally {
       setIsSaving(false);
@@ -137,9 +189,9 @@ export default function TeamMemberDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">
+      <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3 sm:gap-0">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
             {isNewMember ? "Add Team Member" : "Edit Team Member"}
           </h1>
 
@@ -147,7 +199,7 @@ export default function TeamMemberDetailPage() {
             <Button
               onClick={handleDelete}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
             >
               Delete
             </Button>
@@ -187,57 +239,100 @@ export default function TeamMemberDetailPage() {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-32 text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-24 md:h-32 text-white"
             />
           </div>
 
           <div>
-            <label className="block text-white mb-2">Photo</label>
-            <div className="flex items-center gap-4">
+            <label className="block text-white mb-2">Media (Photo/Video)</label>
+            <div className="text-white/60 text-sm mb-2">
+              Upload an image (max 10MB) or video (max 100MB)
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <input
                 type="file"
-                onChange={handlePhotoChange}
+                onChange={handleMediaChange}
                 className="hidden"
-                id="teamMemberPhoto"
-                accept="image/*"
+                id="teamMemberMedia"
+                accept="image/*,video/*"
               />
               <label
-                htmlFor="teamMemberPhoto"
-                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition"
+                htmlFor="teamMemberMedia"
+                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition w-full sm:w-auto text-center"
               >
                 Choose File
               </label>
-              <span className="text-white/60 text-sm">
-                {photoFile ? photoFile.name : "No file chosen"}
+              <span className="text-white/60 text-sm break-all sm:break-normal">
+                {mediaFile ? mediaFile.name : "No file chosen"}
               </span>
             </div>
 
-            {photoPreview && (
-              <div className="mt-2">
-                <div className="w-24 h-24 relative rounded-full overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photoPreview}
-                    alt="Preview"
-                    className="object-cover w-full h-full"
-                  />
+            {mediaPreview && (
+              <div className="mt-3">
+                <div className="flex items-start gap-4">
+                  <div className="relative">
+                    <div className="w-32 h-32 rounded-lg overflow-hidden bg-white/5">
+                      {mediaPreview.type === "image" ? (
+                        <img
+                          src={mediaPreview.url}
+                          alt="Preview"
+                          className="object-cover w-full h-full"
+                        />
+                      ) : (
+                        <video
+                          src={mediaPreview.url}
+                          className="object-cover w-full h-full"
+                          controls
+                        />
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleDeleteMedia}
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-white font-medium">
+                      {mediaPreview.type === "image" ? "Image" : "Video"}
+                    </p>
+                    <p className="text-white/60 text-sm">
+                      {mediaPreview.name ||
+                        (mediaPreview.type === "image" ? "Photo" : "Video")}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
             <Button
               type="button"
               onClick={() => router.push("/admin/team")}
-              className="bg-white/10 hover:bg-white/20 text-white"
+              className="bg-white/10 hover:bg-white/20 text-white w-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
             >
               {isSaving ? "Saving..." : "Save Team Member"}
             </Button>
