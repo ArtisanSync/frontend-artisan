@@ -35,7 +35,7 @@ export default function TeamMemberDetailPage() {
     const fetchTeamMember = async () => {
       try {
         const response = await TeamService.getTeamMemberById(id);
-        console.log("Team member data received:", response); // Tambahkan log untuk debug
+        console.log("Team member data received:", response);
 
         // Pastikan kita mengambil data dari struktur yang benar
         const memberData = response.data || response; // API mengembalikan { success: true, data: {...} }
@@ -137,9 +137,9 @@ export default function TeamMemberDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">
+      <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3 sm:gap-0">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
             {isNewMember ? "Add Team Member" : "Edit Team Member"}
           </h1>
 
@@ -147,7 +147,7 @@ export default function TeamMemberDetailPage() {
             <Button
               onClick={handleDelete}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
             >
               Delete
             </Button>
@@ -187,13 +187,13 @@ export default function TeamMemberDetailPage() {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-32 text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-24 md:h-32 text-white"
             />
           </div>
 
           <div>
             <label className="block text-white mb-2">Photo</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <input
                 type="file"
                 onChange={handlePhotoChange}
@@ -203,17 +203,17 @@ export default function TeamMemberDetailPage() {
               />
               <label
                 htmlFor="teamMemberPhoto"
-                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition"
+                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition w-full sm:w-auto text-center"
               >
                 Choose File
               </label>
-              <span className="text-white/60 text-sm">
+              <span className="text-white/60 text-sm break-all sm:break-normal">
                 {photoFile ? photoFile.name : "No file chosen"}
               </span>
             </div>
 
             {photoPreview && (
-              <div className="mt-2">
+              <div className="mt-3 flex justify-center sm:justify-start">
                 <div className="w-24 h-24 relative rounded-full overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -226,18 +226,18 @@ export default function TeamMemberDetailPage() {
             )}
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
             <Button
               type="button"
               onClick={() => router.push("/admin/team")}
-              className="bg-white/10 hover:bg-white/20 text-white"
+              className="bg-white/10 hover:bg-white/20 text-white w-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
             >
               {isSaving ? "Saving..." : "Save Team Member"}
             </Button>
