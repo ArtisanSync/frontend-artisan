@@ -33,7 +33,7 @@ export default function ServiceDetailPage() {
     const fetchService = async () => {
       try {
         const response = await ServiceService.getServiceById(id);
-        console.log("Service data received:", response); // Tambahkan log untuk debug
+        console.log("Service data received:", response);
 
         // Pastikan kita mengambil data dari struktur yang benar
         const serviceData = response.data || response; // API mengembalikan { success: true, data: {...} }
@@ -108,9 +108,9 @@ export default function ServiceDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">
+      <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3 sm:gap-0">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
             {isNewService ? "Create New Service" : "Edit Service"}
           </h1>
 
@@ -118,7 +118,7 @@ export default function ServiceDetailPage() {
             <Button
               onClick={handleDelete}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
             >
               Delete
             </Button>
@@ -146,7 +146,7 @@ export default function ServiceDetailPage() {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-32 text-white"
+              className="w-full bg-white/5 border border-white/10 rounded-md p-2 h-24 md:h-32 text-white"
               required
             />
           </div>
@@ -162,18 +162,18 @@ export default function ServiceDetailPage() {
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
             <Button
               type="button"
               onClick={() => router.push("/admin/services")}
-              className="bg-white/10 hover:bg-white/20 text-white"
+              className="bg-white/10 hover:bg-white/20 text-white w-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
             >
               {isSaving ? "Saving..." : "Save Service"}
             </Button>
