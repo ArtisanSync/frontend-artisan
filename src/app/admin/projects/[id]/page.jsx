@@ -132,9 +132,9 @@ export default function ProjectDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">
+      <div className="bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3 sm:gap-0">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
             {isNewProject ? "Create New Project" : "Edit Project"}
           </h1>
 
@@ -142,7 +142,7 @@ export default function ProjectDetailPage() {
             <Button
               onClick={handleDelete}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
             >
               Delete
             </Button>
@@ -177,7 +177,7 @@ export default function ProjectDetailPage() {
 
           <div>
             <label className="block text-white mb-2">Image</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <input
                 type="file"
                 onChange={handleImageChange}
@@ -187,11 +187,11 @@ export default function ProjectDetailPage() {
               />
               <label
                 htmlFor="projectImage"
-                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition"
+                className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition w-full sm:w-auto text-center"
               >
                 Choose File
               </label>
-              <span className="text-white/60 text-sm">
+              <span className="text-white/60 text-sm break-all sm:break-normal">
                 {imageFile ? imageFile.name : "No file chosen"}
               </span>
             </div>
@@ -210,18 +210,18 @@ export default function ProjectDetailPage() {
             )}
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
             <Button
               type="button"
               onClick={() => router.push("/admin/projects")}
-              className="bg-white/10 hover:bg-white/20 text-white"
+              className="bg-white/10 hover:bg-white/20 text-white w-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
             >
               {isSaving ? "Saving..." : "Save Project"}
             </Button>
