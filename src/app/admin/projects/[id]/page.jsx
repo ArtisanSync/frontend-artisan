@@ -15,9 +15,10 @@ export default function ProjectDetailPage() {
     title: "",
     description: "",
   });
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState("");
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [mediaPreviews, setMediaPreviews] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [keepExistingMedia, setKeepExistingMedia] = useState(true);
 
   const router = useRouter();
   const params = useParams();
@@ -46,8 +47,23 @@ export default function ProjectDetailPage() {
           description: projectData.description || "",
         });
 
-        if (projectData.image) {
-          setImagePreview(projectData.image);
+        // Handle media previews (baik gambar maupun video)
+        if (projectData.media && projectData.media.length > 0) {
+          setMediaPreviews(
+            projectData.media.map((item) => ({
+              url: item.url,
+              fileId: item.fileId,
+              type: item.type,
+            }))
+          );
+        } else if (projectData.image) {
+          setMediaPreviews([
+            {
+              url: projectData.image,
+              type: "image",
+              fileId: projectData.mediaFileId || null,
+            },
+          ]);
         }
 
         setIsLoading(false);
@@ -69,16 +85,53 @@ export default function ProjectDetailPage() {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const handleMediaChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setMediaFiles(files);
+
+      // Create previews for each file
+      const newPreviews = [];
+
+      files.forEach((file) => {
+        const fileType = file.type.startsWith("image/") ? "image" : "video";
+
+        if (fileType === "image") {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            newPreviews.push({
+              url: reader.result,
+              type: "image",
+              name: file.name,
+            });
+            if (newPreviews.length === files.length) {
+              setMediaPreviews(newPreviews);
+            }
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // For video, we can use URL.createObjectURL for preview
+          const videoUrl = URL.createObjectURL(file);
+          newPreviews.push({
+            url: videoUrl,
+            type: "video",
+            name: file.name,
+          });
+          if (newPreviews.length === files.length) {
+            setMediaPreviews(newPreviews);
+          }
+        }
+      });
     }
+  };
+
+  const handleDeleteMediaPreview = (index) => {
+    setMediaPreviews((prev) => prev.filter((_, i) => i !== index));
+    setMediaFiles((prev) => {
+      const newFiles = [...prev];
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -90,8 +143,22 @@ export default function ProjectDetailPage() {
       formDataObj.append("title", formData.title);
       formDataObj.append("description", formData.description);
 
-      if (imageFile) {
-        formDataObj.append("image", imageFile);
+      // Handle media files (images and videos)
+      if (mediaFiles.length > 0) {
+        // Append each media file
+        mediaFiles.forEach((file) => {
+          formDataObj.append("media", file);
+        });
+
+        // Set the content type if it's a video to trigger the correct upload limits
+        if (mediaFiles.some((file) => file.type.startsWith("video/"))) {
+          formDataObj.append("mediaType", "video");
+        }
+
+        // Keep existing media if editing
+        if (!isNewProject && keepExistingMedia) {
+          formDataObj.append("keepMedia", "true");
+        }
       }
 
       if (isNewProject) {
@@ -104,9 +171,29 @@ export default function ProjectDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       router.push("/admin/projects");
     } catch (err) {
+      console.error("Error saving project:", err);
       setError("Failed to save project");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDeleteAllMedia = async () => {
+    if (window.confirm("Are you sure you want to delete all media?")) {
+      try {
+        if (!isNewProject) {
+          const formDataObj = new FormData();
+          formDataObj.append("deleteAllMedia", "true");
+          await ProjectService.updateProject(id, formDataObj);
+          setMediaPreviews([]);
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
+        } else {
+          setMediaPreviews([]);
+          setMediaFiles([]);
+        }
+      } catch (err) {
+        setError("Failed to delete media");
+      }
     }
   };
 
@@ -176,35 +263,107 @@ export default function ProjectDetailPage() {
           </div>
 
           <div>
-            <label className="block text-white mb-2">Image</label>
+            <label className="block text-white mb-2">
+              Media (Images & Videos)
+            </label>
+            <div className="text-white/60 text-sm mb-2">
+              Upload up to 5 images (max 10MB each) or videos (max 100MB each)
+            </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <input
                 type="file"
-                onChange={handleImageChange}
+                onChange={handleMediaChange}
                 className="hidden"
-                id="projectImage"
-                accept="image/*"
+                id="projectMedia"
+                accept="image/*,video/*"
+                multiple
               />
               <label
-                htmlFor="projectImage"
+                htmlFor="projectMedia"
                 className="bg-white/5 border border-white/10 rounded-md px-4 py-2 text-white cursor-pointer hover:bg-white/10 transition w-full sm:w-auto text-center"
               >
-                Choose File
+                Choose Files
               </label>
               <span className="text-white/60 text-sm break-all sm:break-normal">
-                {imageFile ? imageFile.name : "No file chosen"}
+                {mediaFiles.length > 0
+                  ? `${mediaFiles.length} file(s) selected`
+                  : "No files chosen"}
               </span>
             </div>
 
-            {imagePreview && (
+            {!isNewProject && mediaPreviews.length > 0 && (
               <div className="mt-2">
-                <div className="w-32 h-32 relative rounded-md overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="object-cover w-full h-full"
+                <label className="flex items-center text-white/80 mb-2">
+                  <input
+                    type="checkbox"
+                    checked={keepExistingMedia}
+                    onChange={() => setKeepExistingMedia(!keepExistingMedia)}
+                    className="mr-2"
                   />
+                  Keep existing media when uploading new files
+                </label>
+              </div>
+            )}
+
+            {mediaPreviews.length > 0 && (
+              <div className="mt-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-white font-medium">Media Preview</h3>
+                  <Button
+                    type="button"
+                    onClick={handleDeleteAllMedia}
+                    variant="destructive"
+                    className="bg-red-600 hover:bg-red-700 text-xs py-1 px-2"
+                  >
+                    Delete All
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {mediaPreviews.map((media, index) => (
+                    <div key={index} className="relative group">
+                      <div className="aspect-square rounded-md overflow-hidden bg-white/5">
+                        {media.type === "image" ? (
+                          <img
+                            src={media.url}
+                            alt={`Preview ${index}`}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <video
+                            src={media.url}
+                            className="w-full h-full object-cover"
+                            controls
+                          />
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteMediaPreview(index)}
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                      <div className="mt-1 text-white/60 text-xs truncate">
+                        {media.name ||
+                          `${media.type === "image" ? "Image" : "Video"} ${
+                            index + 1
+                          }`}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
