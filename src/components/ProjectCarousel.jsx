@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Play, Pause } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
+
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 export default function ProjectCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,6 +20,9 @@ export default function ProjectCarousel() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [nextClickCount, setNextClickCount] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState({});
+  const playerRefs = useRef({});
 
   const { data, isLoading, isError, error } = useProjects();
   const projects = data?.data || [];
@@ -28,8 +34,9 @@ export default function ProjectCarousel() {
     setCurrentIndex((prevIndex) =>
       prevIndex === projects.length - 1 ? 0 : prevIndex + 1
     );
-
+    setCurrentImageIndex(0);
     setNextClickCount((prev) => prev + 1);
+    setIsPlaying({});
 
     setTimeout(() => {
       setTransitioning(false);
@@ -43,6 +50,8 @@ export default function ProjectCarousel() {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? projects.length - 1 : prevIndex - 1
     );
+    setCurrentImageIndex(0);
+    setIsPlaying({});
 
     setTimeout(() => {
       setTransitioning(false);
@@ -54,10 +63,34 @@ export default function ProjectCarousel() {
 
     setTransitioning(true);
     setCurrentIndex(index);
+    setCurrentImageIndex(0);
+    setIsPlaying({});
 
     setTimeout(() => {
       setTransitioning(false);
     }, 300);
+  };
+
+  const nextImage = (e) => {
+    e.stopPropagation();
+    const project = projects[currentIndex];
+    const mediaCount = getMediaCount(project);
+
+    if (mediaCount <= 1) return;
+
+    setCurrentImageIndex((prev) => (prev === mediaCount - 1 ? 0 : prev + 1));
+    setIsPlaying({});
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    const project = projects[currentIndex];
+    const mediaCount = getMediaCount(project);
+
+    if (mediaCount <= 1) return;
+
+    setCurrentImageIndex((prev) => (prev === 0 ? mediaCount - 1 : prev - 1));
+    setIsPlaying({});
   };
 
   const handleTouchStart = (e) => {
@@ -96,6 +129,52 @@ export default function ProjectCarousel() {
     setShowModal(false);
     setSelectedProject(null);
     document.body.style.overflow = "";
+    setIsPlaying({});
+  };
+
+  const getMediaCount = (project) => {
+    if (
+      project?.media &&
+      Array.isArray(project.media) &&
+      project.media.length > 0
+    ) {
+      return project.media.length;
+    }
+    return project?.image ? 1 : 0;
+  };
+
+  const getProjectMedia = (project, index = 0) => {
+    if (!project) return { url: null, type: null };
+
+    if (
+      project.media &&
+      Array.isArray(project.media) &&
+      project.media.length > 0
+    ) {
+      if (index >= 0 && index < project.media.length) {
+        return {
+          url: project.media[index].url,
+          type: project.media[index].type || "image",
+        };
+      }
+      return {
+        url: project.media[0].url,
+        type: project.media[0].type || "image",
+      };
+    }
+
+    return {
+      url: project.image || null,
+      type: "image",
+    };
+  };
+
+  const togglePlayPause = (e, id) => {
+    e.stopPropagation();
+    setIsPlaying((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   useEffect(() => {
@@ -108,6 +187,87 @@ export default function ProjectCarousel() {
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [showModal]);
+
+  useEffect(() => {
+    setIsPlaying({});
+  }, [currentImageIndex, currentIndex, showModal]);
+
+  const MediaDisplay = ({ url, type, project, index, inModal = false, id }) => {
+    if (!url) return null;
+
+    const mediaId = `${id || project?._id || index}-${type}`;
+
+    if (type === "video") {
+      return (
+        <div className="relative w-full h-full">
+          <ReactPlayer
+            ref={(el) => {
+              if (el) playerRefs.current[mediaId] = el;
+            }}
+            url={url}
+            width="100%"
+            height="100%"
+            controls={false}
+            playing={!!isPlaying[mediaId]}
+            loop={true}
+            muted={!isPlaying[mediaId]}
+            config={{
+              file: {
+                attributes: {
+                  controlsList: "nodownload",
+                  disablePictureInPicture: true,
+                },
+              },
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              objectFit: "contain",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <div
+            className="absolute inset-0 flex items-center justify-center cursor-pointer z-20"
+            onClick={(e) => togglePlayPause(e, mediaId)}
+          >
+            {!isPlaying[mediaId] && (
+              <div className="bg-black/50 rounded-full p-3 opacity-80 hover:opacity-100 transition-opacity">
+                <Play size={24} />
+              </div>
+            )}
+          </div>
+          {isPlaying[mediaId] && (
+            <button
+              onClick={(e) => togglePlayPause(e, mediaId)}
+              className="absolute bottom-4 right-4 bg-black/60 rounded-full p-2 text-white hover:bg-black/80 transition-colors z-30"
+              aria-label="Pause"
+            >
+              <Pause size={20} />
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className="absolute inset-0">
+        <Image
+          src={url}
+          alt={project?.title || "Project"}
+          fill
+          className="object-contain"
+          priority={inModal || index === currentIndex}
+          sizes={inModal ? "(max-width: 768px) 100vw, 800px" : "60vw"}
+          unoptimized={true}
+          style={{
+            objectFit: "contain",
+            objectPosition: "center",
+          }}
+        />
+      </div>
+    );
+  };
 
   return (
     <>
@@ -218,30 +378,28 @@ export default function ProjectCarousel() {
                               onClick={prevSlide}
                             >
                               <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-100 group-hover:blur-[0px] group-hover:scale-95 transition-all duration-300">
-                                {projects[getModifiedIndex(currentIndex - 1)]
-                                  ?.image && (
-                                  <div className="absolute inset-0">
-                                    <Image
-                                      src={
+                                {getProjectMedia(
+                                  projects[getModifiedIndex(currentIndex - 1)]
+                                ).url && (
+                                  <MediaDisplay
+                                    url={
+                                      getProjectMedia(
                                         projects[
                                           getModifiedIndex(currentIndex - 1)
-                                        ].image
-                                      }
-                                      alt={
-                                        projects[
-                                          getModifiedIndex(currentIndex - 1)
-                                        ].title || "Previous Project"
-                                      }
-                                      fill
-                                      className="object-contain"
-                                      sizes="25vw"
-                                      unoptimized={true}
-                                      style={{
-                                        objectFit: "contain",
-                                        objectPosition: "center",
-                                      }}
-                                    />
-                                  </div>
+                                        ]
+                                      ).url
+                                    }
+                                    type="image"
+                                    project={
+                                      projects[
+                                        getModifiedIndex(currentIndex - 1)
+                                      ]
+                                    }
+                                    index={getModifiedIndex(currentIndex - 1)}
+                                    id={`prev-${getModifiedIndex(
+                                      currentIndex - 1
+                                    )}`}
+                                  />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/50 group-hover:to-black/5"></div>
                               </div>
@@ -252,33 +410,84 @@ export default function ProjectCarousel() {
                               onClick={() => openModal(projects[currentIndex])}
                             >
                               <div className="relative h-full rounded-xl overflow-hidden shadow-2xl group-hover:shadow-blue-500/20 group-hover:shadow-lg transition-all duration-300">
-                                {projects[currentIndex]?.image && (
-                                  <div className="absolute inset-0">
-                                    <Image
-                                      src={projects[currentIndex].image}
-                                      alt={
-                                        projects[currentIndex].title ||
-                                        "Current Project"
-                                      }
-                                      fill
-                                      className="object-contain md:object-cover group-hover:scale-105 transition-transform duration-700"
-                                      priority={true}
-                                      sizes="60vw"
-                                      unoptimized={true}
-                                      style={{
-                                        objectFit: "contain",
-                                        objectPosition: "center",
-                                      }}
-                                    />
-                                  </div>
+                                {getProjectMedia(
+                                  projects[currentIndex],
+                                  currentImageIndex
+                                ).url && (
+                                  <MediaDisplay
+                                    url={
+                                      getProjectMedia(
+                                        projects[currentIndex],
+                                        currentImageIndex
+                                      ).url
+                                    }
+                                    type={
+                                      getProjectMedia(
+                                        projects[currentIndex],
+                                        currentImageIndex
+                                      ).type
+                                    }
+                                    project={projects[currentIndex]}
+                                    index={currentIndex}
+                                    id={`current-${currentIndex}-${currentImageIndex}`}
+                                  />
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10 transition-opacity duration-300"></div>
+
+                                {getProjectMedia(
+                                  projects[currentIndex],
+                                  currentImageIndex
+                                ).type !== "video" && (
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10 transition-opacity duration-300"></div>
+                                )}
 
                                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                   <div className="absolute inset-0 rounded-xl border border-blue-500/50 shadow-[0px_0px_15px_rgba(59,130,246,0.5)]"></div>
                                 </div>
 
-                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8  h-full w-full text-center grid grid-rows-3">
+                                {getMediaCount(projects[currentIndex]) > 1 && (
+                                  <>
+                                    <button
+                                      onClick={prevImage}
+                                      className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30"
+                                      aria-label="Previous image"
+                                    >
+                                      <ChevronLeft className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                      onClick={nextImage}
+                                      className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30"
+                                      aria-label="Next image"
+                                    >
+                                      <ChevronRight className="h-4 w-4" />
+                                    </button>
+
+                                    <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-1 z-30">
+                                      {Array.from({
+                                        length: getMediaCount(
+                                          projects[currentIndex]
+                                        ),
+                                      }).map((_, idx) => {
+                                        const mediaType =
+                                          projects[currentIndex].media &&
+                                          projects[currentIndex].media[idx] &&
+                                          projects[currentIndex].media[idx]
+                                            .type;
+                                        return (
+                                          <div
+                                            key={idx}
+                                            className={`h-1.5 rounded-full transition-all flex items-center justify-center relative ${
+                                              idx === currentImageIndex
+                                                ? "w-6 bg-white"
+                                                : "w-1.5 bg-white/50"
+                                            }`}
+                                          ></div>
+                                        );
+                                      })}
+                                    </div>
+                                  </>
+                                )}
+
+                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 h-full w-full text-center grid grid-rows-3">
                                   <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white group-hover:text-blue-300 transition-colors duration-300 mt-auto">
                                     {projects[currentIndex].title ||
                                       "Untitled Project"}
@@ -298,30 +507,28 @@ export default function ProjectCarousel() {
                               onClick={nextSlide}
                             >
                               <div className="relative h-full rounded-xl overflow-hidden opacity-40 blur-[1px] scale-90 shadow-lg group-hover:opacity-100 group-hover:blur-[0px] group-hover:scale-95 transition-all duration-300">
-                                {projects[getModifiedIndex(currentIndex + 1)]
-                                  ?.image && (
-                                  <div className="absolute inset-0">
-                                    <Image
-                                      src={
+                                {getProjectMedia(
+                                  projects[getModifiedIndex(currentIndex + 1)]
+                                ).url && (
+                                  <MediaDisplay
+                                    url={
+                                      getProjectMedia(
                                         projects[
                                           getModifiedIndex(currentIndex + 1)
-                                        ].image
-                                      }
-                                      alt={
-                                        projects[
-                                          getModifiedIndex(currentIndex + 1)
-                                        ].title || "Next Project"
-                                      }
-                                      fill
-                                      className="object-contain"
-                                      sizes="25vw"
-                                      unoptimized={true}
-                                      style={{
-                                        objectFit: "contain",
-                                        objectPosition: "center",
-                                      }}
-                                    />
-                                  </div>
+                                        ]
+                                      ).url
+                                    }
+                                    type="image"
+                                    project={
+                                      projects[
+                                        getModifiedIndex(currentIndex + 1)
+                                      ]
+                                    }
+                                    index={getModifiedIndex(currentIndex + 1)}
+                                    id={`next-${getModifiedIndex(
+                                      currentIndex + 1
+                                    )}`}
+                                  />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/50 group-hover:to-black/5"></div>
                               </div>
@@ -375,32 +582,89 @@ export default function ProjectCarousel() {
           <div className="bg-gray-900 rounded-xl w-full max-w-4xl z-10 relative overflow-y-auto h-[70%] md:h-[80%] lg:h-[90%]">
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors z-20"
+              className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors z-30"
               aria-label="Close modal"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <div className="relative w-full h-[300px] sm:h-[400px] bg-gray-700">
-              {selectedProject.image ? (
-                <Image
-                  src={selectedProject.image}
-                  alt={selectedProject.title || "Project Image"}
-                  fill
-                  className="object-contain"
-                  priority={true}
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  unoptimized={true}
-                  style={{
-                    objectFit: "contain",
-                    objectPosition: "center",
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                  <p className="text-gray-400">No image available</p>
-                </div>
-              )}
+            <div className="relative w-full h-[300px] sm:h-[400px] bg-gray-700 group">
+              {(() => {
+                const media = getProjectMedia(
+                  selectedProject,
+                  currentImageIndex
+                );
+                const mediaCount = getMediaCount(selectedProject);
+
+                return media.url ? (
+                  <>
+                    <MediaDisplay
+                      url={media.url}
+                      type={media.type}
+                      project={selectedProject}
+                      index={currentIndex}
+                      inModal={true}
+                      id={`modal-${selectedProject._id}-${currentImageIndex}`}
+                    />
+
+                    {mediaCount > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex((prev) =>
+                              prev === 0 ? mediaCount - 1 : prev - 1
+                            );
+                          }}
+                          className="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30 opacity-0 group-hover:opacity-100"
+                          aria-label="Previous image"
+                        >
+                          <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex((prev) =>
+                              prev === mediaCount - 1 ? 0 : prev + 1
+                            );
+                          }}
+                          className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30 opacity-0 group-hover:opacity-100"
+                          aria-label="Next image"
+                        >
+                          <ChevronRight className="h-5 w-5" />
+                        </button>
+
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
+                          {Array.from({ length: mediaCount }).map((_, idx) => {
+                            const mediaType =
+                              selectedProject.media &&
+                              selectedProject.media[idx] &&
+                              selectedProject.media[idx].type;
+                            return (
+                              <div
+                                key={idx}
+                                className={`h-2 rounded-full transition-all flex items-center justify-center relative ${
+                                  idx === currentImageIndex
+                                    ? "w-8 bg-white"
+                                    : "w-2 bg-white/50 hover:bg-white/70 cursor-pointer"
+                                }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setCurrentImageIndex(idx);
+                                }}
+                              ></div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                    <p className="text-gray-400">No media available</p>
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="p-6 md:p-8">
