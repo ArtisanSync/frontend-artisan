@@ -31,12 +31,18 @@ function Hero() {
             src={LeftBanner}
             alt="Decorative left banner"
             priority
+            data-aos="fade-right"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
           />
           <Image
             className="float-right w-1/3 md:w-1/3"
             src={RightBanner}
             alt="Decorative right banner"
             priority
+            data-aos="fade-left"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
           />
         </div>
       </div>
@@ -53,10 +59,8 @@ function Hero() {
           <p
             className="text-sm text-justify sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white"
             data-aos="fade-up"
-            data-aos-duration="700"
-            data-aos-delay="200"
+            data-aos-duration="1000"
             data-aos-easing="ease-in-out"
-            data-aos-anchor-placement="top-center"
           >
             We are ArtisanSync, a team of professional software developers
             dedicated to delivering the best digital solutions for your business
@@ -68,9 +72,8 @@ function Hero() {
             className="bg-[#CEE0FD] w-full min-w-[180px] md:w-auto md:h-[43px] text-black hover:bg-blue-600 hover:text-white"
             onClick={handleScrollToContact}
             data-aos="fade-up"
-            data-aos-duration="900"
+            data-aos-duration="1000"
             data-aos-delay="200"
-            data-aos-easing="ease-in-out"
           >
             Let's Work Together
           </Button>
