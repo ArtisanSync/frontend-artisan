@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight, X, Play, Pause } from "lucide-react";
 import { useProjects } from "@/hooks/use-projects";
 import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
+import useAos from "@/hooks/use-aos";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -236,15 +237,29 @@ export default function ProjectCarousel() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-10 md:mb-16 max-w-3xl mx-auto">
             <Badge
               variant="outline"
-              className="px-4 py-1 text-sm rounded-full border-primary/30 text-white"
+              className="px-4 py-1 text-lg rounded-full border-primary/30 text-white"
+              data-aos="fade-down"
+              data-aos-duration="1000"
             >
               Our Portfolio
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent">
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent"
+              data-aos="zoom-in"
+              data-aos-duration="1000"
+            >
               Featured Projects
             </h2>
-            <div className="w-16 h-1 bg-blue-500 rounded-full my-2"></div>
-            <p className="max-w-[600px] text-base text-gray-400 md:text-lg">
+            <div
+              className="w-16 h-1 bg-blue-500 rounded-full my-2"
+              data-aos="fade-up"
+              data-aos-duration="500"
+            ></div>
+            <p
+              className="max-w-[600px] text-base text-gray-400 md:text-lg"
+              data-aos="fade-up"
+              data-aos-duration="500"
+            >
               Explore our latest works showcasing our expertise and creativity
             </p>
           </div>
