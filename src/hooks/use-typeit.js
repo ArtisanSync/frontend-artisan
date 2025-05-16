@@ -11,12 +11,13 @@ export default function (option = {}) {
       loop: true,
       ...option,
     });
+    instance.type("Welcome to Artisan Sync");
     instance.go();
 
     return () => {
       instance.destroy();
     };
-  });
+  }, []);
 
   return typingRef;
 }
