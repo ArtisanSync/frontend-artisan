@@ -14,8 +14,6 @@ const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 export default function ProjectCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -69,26 +67,6 @@ export default function ProjectCarousel() {
     setTimeout(() => {
       setTransitioning(false);
     }, 300);
-  };
-
-  const handleTouchStart = (e) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (transitioning) return;
-
-    if (touchStart - touchEnd > 75) {
-      nextSlide();
-    }
-
-    if (touchStart - touchEnd < -75) {
-      prevSlide();
-    }
   };
 
   const getModifiedIndex = (index) => {
@@ -344,12 +322,7 @@ export default function ProjectCarousel() {
                     </div>
                   ) : (
                     <div className="relative">
-                      <div
-                        className="relative h-[350px] md:h-[450px] overflow-visible"
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
-                      >
+                      <div className="relative h-[350px] md:h-[450px] overflow-visible">
                         {projects && projects.length > 0 ? (
                           <>
                             <div
@@ -587,26 +560,20 @@ export default function ProjectCarousel() {
                         </button>
 
                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
-                          {Array.from({ length: mediaCount }).map((_, idx) => {
-                            const mediaType =
-                              selectedProject.media &&
-                              selectedProject.media[idx] &&
-                              selectedProject.media[idx].type;
-                            return (
-                              <div
-                                key={idx}
-                                className={`h-2 rounded-full transition-all flex items-center justify-center relative ${
-                                  idx === currentImageIndex
-                                    ? "w-8 bg-white"
-                                    : "w-2 bg-white/50 hover:bg-white/70 cursor-pointer"
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setCurrentImageIndex(idx);
-                                }}
-                              ></div>
-                            );
-                          })}
+                          {Array.from({ length: mediaCount }).map((_, idx) => (
+                            <div
+                              key={idx}
+                              className={`h-2 rounded-full transition-all flex items-center justify-center relative ${
+                                idx === currentImageIndex
+                                  ? "w-8 bg-white"
+                                  : "w-2 bg-white/50 hover:bg-white/70 cursor-pointer"
+                              }`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(idx);
+                              }}
+                            ></div>
+                          ))}
                         </div>
                       </>
                     )}
