@@ -71,28 +71,6 @@ export default function ProjectCarousel() {
     }, 300);
   };
 
-  const nextImage = (e) => {
-    e.stopPropagation();
-    const project = projects[currentIndex];
-    const mediaCount = getMediaCount(project);
-
-    if (mediaCount <= 1) return;
-
-    setCurrentImageIndex((prev) => (prev === mediaCount - 1 ? 0 : prev + 1));
-    setIsPlaying({});
-  };
-
-  const prevImage = (e) => {
-    e.stopPropagation();
-    const project = projects[currentIndex];
-    const mediaCount = getMediaCount(project);
-
-    if (mediaCount <= 1) return;
-
-    setCurrentImageIndex((prev) => (prev === 0 ? mediaCount - 1 : prev - 1));
-    setIsPlaying({});
-  };
-
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
   };
@@ -122,6 +100,7 @@ export default function ProjectCarousel() {
   const openModal = (project) => {
     setSelectedProject(project);
     setShowModal(true);
+    setCurrentImageIndex(0);
     document.body.style.overflow = "hidden";
   };
 
@@ -410,33 +389,25 @@ export default function ProjectCarousel() {
                               onClick={() => openModal(projects[currentIndex])}
                             >
                               <div className="relative h-full rounded-xl overflow-hidden shadow-2xl group-hover:shadow-blue-500/20 group-hover:shadow-lg transition-all duration-300">
-                                {getProjectMedia(
-                                  projects[currentIndex],
-                                  currentImageIndex
-                                ).url && (
+                                {getProjectMedia(projects[currentIndex])
+                                  .url && (
                                   <MediaDisplay
                                     url={
-                                      getProjectMedia(
-                                        projects[currentIndex],
-                                        currentImageIndex
-                                      ).url
+                                      getProjectMedia(projects[currentIndex])
+                                        .url
                                     }
                                     type={
-                                      getProjectMedia(
-                                        projects[currentIndex],
-                                        currentImageIndex
-                                      ).type
+                                      getProjectMedia(projects[currentIndex])
+                                        .type
                                     }
                                     project={projects[currentIndex]}
                                     index={currentIndex}
-                                    id={`current-${currentIndex}-${currentImageIndex}`}
+                                    id={`current-${currentIndex}-0`}
                                   />
                                 )}
 
-                                {getProjectMedia(
-                                  projects[currentIndex],
-                                  currentImageIndex
-                                ).type !== "video" && (
+                                {getProjectMedia(projects[currentIndex])
+                                  .type !== "video" && (
                                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 group-hover:via-black/60 group-hover:to-black/10 transition-opacity duration-300"></div>
                                 )}
 
@@ -445,46 +416,27 @@ export default function ProjectCarousel() {
                                 </div>
 
                                 {getMediaCount(projects[currentIndex]) > 1 && (
-                                  <>
-                                    <button
-                                      onClick={prevImage}
-                                      className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30"
-                                      aria-label="Previous image"
-                                    >
-                                      <ChevronLeft className="h-4 w-4" />
-                                    </button>
-                                    <button
-                                      onClick={nextImage}
-                                      className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors z-30"
-                                      aria-label="Next image"
-                                    >
-                                      <ChevronRight className="h-4 w-4" />
-                                    </button>
-
-                                    <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-1 z-30">
-                                      {Array.from({
-                                        length: getMediaCount(
-                                          projects[currentIndex]
-                                        ),
-                                      }).map((_, idx) => {
-                                        const mediaType =
-                                          projects[currentIndex].media &&
-                                          projects[currentIndex].media[idx] &&
-                                          projects[currentIndex].media[idx]
-                                            .type;
-                                        return (
-                                          <div
-                                            key={idx}
-                                            className={`h-1.5 rounded-full transition-all flex items-center justify-center relative ${
-                                              idx === currentImageIndex
-                                                ? "w-6 bg-white"
-                                                : "w-1.5 bg-white/50"
-                                            }`}
-                                          ></div>
-                                        );
-                                      })}
+                                  <div className="absolute top-4 right-4 z-30 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white">
+                                    <div className="flex items-center gap-1">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-3 h-3"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                      <span>
+                                        +
+                                        {getMediaCount(projects[currentIndex]) -
+                                          1}
+                                      </span>
                                     </div>
-                                  </>
+                                  </div>
                                 )}
 
                                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 h-full w-full text-center grid grid-rows-3">
