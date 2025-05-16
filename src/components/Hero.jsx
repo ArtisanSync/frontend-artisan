@@ -4,24 +4,13 @@ import { Button } from "./ui/button";
 import Image from "next/image";
 import LeftBanner from "../../public/left-banner.svg";
 import RightBanner from "../../public/right-banner.svg";
-import { useEffect, useRef } from "react";
-import TypeIt from "typeit";
+import useAos from "../hooks/use-aos";
+import UseTypeIt from "@/hooks/use-typeit";
 
 function Hero() {
-  const typingRef = useRef(null);
+  useAos();
 
-  useEffect(() => {
-    if (!typingRef.current) return;
-    const instance = new TypeIt(typingRef.current, {
-      speed: 90,
-      loop: true,
-    });
-    instance.go();
-
-    return () => {
-      instance.destroy();
-    };
-  });
+  const typingRef = UseTypeIt();
 
   const handleScrollToContact = () => {
     const contactSection = document.getElementById("contact");
@@ -61,7 +50,14 @@ function Hero() {
             Welcome to Artisan Sync
           </h1>
 
-          <p className="text-sm text-justify sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white">
+          <p
+            className="text-sm text-justify sm:text-base md:text-[16px] w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mb-8 sm:mb-10 md:mb-[75px] text-white"
+            data-aos="fade-up"
+            data-aos-duration="700"
+            data-aos-delay="200"
+            data-aos-easing="ease-in-out"
+            data-aos-anchor-placement="top-center"
+          >
             We are ArtisanSync, a team of professional software developers
             dedicated to delivering the best digital solutions for your business
             website. From responsive websites to intuitive mobile applications,
@@ -71,6 +67,10 @@ function Hero() {
           <Button
             className="bg-[#CEE0FD] w-full min-w-[180px] md:w-auto md:h-[43px] text-black hover:bg-blue-600 hover:text-white"
             onClick={handleScrollToContact}
+            data-aos="fade-up"
+            data-aos-duration="900"
+            data-aos-delay="200"
+            data-aos-easing="ease-in-out"
           >
             Let's Work Together
           </Button>
