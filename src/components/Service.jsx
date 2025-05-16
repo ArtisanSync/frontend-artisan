@@ -5,6 +5,7 @@ import { Skeleton } from "./ui/skeleton";
 import { useServices } from "@/hooks/use-services";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "./ui/button";
+import useAos from "@/hooks/use-aos";
 
 function ServiceSkeleton() {
   return (
@@ -25,7 +26,12 @@ function ServiceList({ services }) {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-4">
+    <div
+      className="flex flex-wrap justify-center gap-4"
+      data-aos="fade-up"
+      data-aos-duration="900"
+      data-aos-delay="100"
+    >
       {services.map((service) => (
         <div
           key={service._id}
@@ -83,7 +89,11 @@ export default function Service() {
     <section className="text-white mt-4 sm:mt-6 md:mt-8" id="service">
       <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-screen-2xl">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-[#2563EB] text-2xl md:text-[32px] font-bold">
+          <h2
+            className="text-[#2563EB] text-2xl md:text-[32px] font-bold "
+            data-aos="fade-up"
+            data-aos-duration="900"
+          >
             WHAT CAN WE DO FOR YOU
           </h2>
         </div>
