@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { images } from "@/constants/images";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Award, Briefcase, GraduationCap } from "lucide-react";
+import useAos from "@/hooks/use-aos";
 
 const FounderSection = () => {
   return (
@@ -12,17 +15,29 @@ const FounderSection = () => {
             <Badge
               variant="outline"
               className="px-4 py-2 rounded-full border-primary/30 gap-2 bg-blue-500/5"
+              data-aos="fade-up"
+              data-aos-duration="900"
             >
               <MessageSquare className="h-4 w-4 text-blue-400" />
               <span className="text-blue-400">Founder & CEO</span>
             </Badge>
 
-            <h2 className="text-4xl py-4 md:text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <h2
+              className="text-4xl py-4 md:text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+              data-aos="fade-up"
+              data-aos-duration="900"
+              data-aos-delay="100"
+            >
               Yogi Efani Yancandra
             </h2>
 
             <div className="space-y-4">
-              <div className="flex gap-3 items-start">
+              <div
+                className="flex gap-3 items-start"
+                data-aos="fade-right"
+                data-aos-duration="1100"
+                data-aos-delay="200"
+              >
                 <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
                   <MessageSquare className="h-4 w-4 text-white" />
                 </div>
@@ -34,7 +49,12 @@ const FounderSection = () => {
                 </div>
               </div>
 
-              <div className="flex gap-3 items-start">
+              <div
+                className="flex gap-3 items-start"
+                data-aos="fade-right"
+                data-aos-duration="1100"
+                data-aos-delay="400"
+              >
                 <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
                   <MessageSquare className="h-4 w-4 text-white" />
                 </div>
@@ -47,7 +67,12 @@ const FounderSection = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 items-start">
+              <div
+                className="flex justify-end gap-3 items-start"
+                data-aos="fade-left"
+                data-aos-duration="1000"
+                data-aos-delay="500"
+              >
                 <div className="bg-gray-700/40 backdrop-blur-sm p-4 rounded-2xl rounded-tr-none max-w-sm">
                   <p className="text-gray-200 text-sm">
                     Want to learn more about how we can help with your project?
@@ -68,8 +93,16 @@ const FounderSection = () => {
                 width={500}
                 height={500}
                 className="rounded-lg"
+                data-aos="fade-left"
+                data-aos-duration="900"
+                data-aos-delay="100"
               />
-              <div className="absolute -bottom-4 -right-4 p-3 flex items-center gap-3 bg-black/80 backdrop-blur-sm rounded-lg border border-white/10">
+              <div
+                className="absolute -bottom-4 -right-4 p-3 flex items-center gap-3 bg-black/80 backdrop-blur-sm rounded-lg border border-white/10 "
+                data-aos="fade-left"
+                data-aos-duration="900"
+                data-aos-delay="100"
+              >
                 <GraduationCap className="h-5 w-5 text-blue-400" />
                 <div>
                   <div className="text-sm font-medium text-white">
