@@ -38,6 +38,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+import useAos from "@/hooks/use-aos";
+
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -50,6 +52,7 @@ const formSchema = z.object({
 });
 
 export default function Contact() {
+  useAos();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const contactMutation = useContact();
@@ -81,7 +84,7 @@ export default function Contact() {
       <div className="container mx-auto max-w-7xl sm:px-4 px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="flex flex-col justify-start">
-            <div className="mb-8">
+            <div className="mb-8" data-aos="fade-up">
               <h2 className="text-3xl font-bold mb-2 text-white">Let's Talk</h2>
               <p className="text-gray-400">
                 Reach out for business inquiries or just say hello.
@@ -89,7 +92,11 @@ export default function Contact() {
             </div>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-3">
+              <div
+                className="flex items-start gap-3"
+                data-aos="fade-right"
+                data-aos-duration="800"
+              >
                 <MapPin className="h-5 w-5 text-blue-500 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1 text-white">Address:</h3>
@@ -101,7 +108,12 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div
+                className="flex items-start gap-3"
+                data-aos="fade-right"
+                data-aos-duration="800"
+                data-aos-delay="100"
+              >
                 <Phone className="h-5 w-5 text-blue-500 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1 text-white">Phone:</h3>
@@ -114,7 +126,12 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div
+                className="flex items-start gap-3"
+                data-aos="fade-right"
+                data-aos-duration="800"
+                data-aos-delay="150"
+              >
                 <Mail className="h-5 w-5 text-blue-500 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1 text-white">Email:</h3>
@@ -127,7 +144,12 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div
+                className="flex items-start gap-3"
+                data-aos="fade-right"
+                data-aos-duration="800"
+                data-aos-delay="200"
+              >
                 <Phone className="h-5 w-5 text-blue-500 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1 text-white">WhatsApp:</h3>
@@ -142,7 +164,12 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div
+                className="flex items-start gap-3"
+                data-aos="fade-right"
+                data-aos-duration="800"
+                data-aos-delay="250"
+              >
                 <Clock className="h-5 w-5 text-blue-500 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1 text-white">
@@ -154,7 +181,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div>
+              <div data-aos="fade-up" data-aos-duration="800">
                 <h3 className="font-semibold mb-3 text-white">
                   Connect with us:
                 </h3>
@@ -180,7 +207,11 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10">
+          <div
+            className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10"
+            data-aos="fade-left"
+            data-aos-duration="700"
+          >
             <h2 className="text-2xl font-bold mb-6 text-white">
               Send Us a Message
             </h2>
