@@ -17,7 +17,7 @@ export const metadata = {
     "software development, web development, mobile app, digital solutions, responsive websites, professional developers, Indonesia",
   icons: {
     icon: [
-      { url: "/favicon.ico" },
+      { rel: "icon", url: "/favicon.ico" },
       { url: "/icon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
@@ -56,6 +56,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body
         className={`${poppins.variable} antialiased min-h-screen flex flex-col bg-[#10101E]`}
       >
