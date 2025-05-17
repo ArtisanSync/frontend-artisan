@@ -32,7 +32,7 @@ export const metadata = {
     siteName: "Artisan Sync",
     images: [
       {
-        url: "https://artisansync.com/og-image.jpg",
+        url: "https://ik.imagekit.io/72mu50jam/logo%20vertical%20no%20text.jpg?updatedAt=1747501207279",
         width: 1200,
         height: 630,
         alt: "Artisan Sync - Professional Software Development Services",
