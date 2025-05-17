@@ -26,6 +26,7 @@ export default function ProjectCarousel() {
   const { data, isLoading, isError, error } = useProjects();
   const projects = data?.data || [];
 
+  useAos();
   const nextSlide = () => {
     if (!projects.length || transitioning) return;
 
@@ -277,7 +278,10 @@ export default function ProjectCarousel() {
 
             {!isError && (
               <>
-                <div className="flex items-center justify-end mb-4 gap-2">
+                <div
+                  className="flex items-center justify-end mb-4 gap-2"
+                  data-aos="fade-right"
+                >
                   {nextClickCount >= 3 ? (
                     <Link href="/projects">
                       <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 transition-all shadow-lg hover:shadow-blue-500/20">

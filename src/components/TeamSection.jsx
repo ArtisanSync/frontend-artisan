@@ -7,8 +7,11 @@ import { useTeams } from "@/hooks/use-teams";
 import { AlertCircle, Link } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaLinkedin } from "react-icons/fa";
+import useAos from "@/hooks/use-aos";
 
 const TeamSection = () => {
+  useAos();
+
   const { data, isLoading, isError, error } = useTeams();
 
   const teamMembers = data?.data || [];
@@ -23,14 +26,23 @@ const TeamSection = () => {
           <Badge
             variant="outline"
             className="px-4 py-1 text-sm rounded-full border-primary/30 text-white"
+            data-aos="fade-down"
+            data-aos-duration="200"
           >
             Our Experts
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent">
+          <h2
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-500 bg-clip-text text-transparent"
+            data-aos="zoom-in"
+            data-aos-duration="900"
+          >
             Meet Our Team
           </h2>
           <div className="w-16 h-1 bg-primary rounded-full my-3"></div>
-          <p className="max-w-[600px] text-base sm:text-lg text-white">
+          <p
+            className="max-w-[600px] text-base sm:text-lg text-white"
+            data-aos="fade-up"
+          >
             Talented professionals building exceptional experiences
           </p>
         </div>

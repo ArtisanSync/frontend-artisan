@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -12,8 +14,9 @@ import {
   Database,
   Monitor,
 } from "lucide-react";
-
+import useAos from "@/hooks/use-aos";
 export default function ServicesAccordion() {
+  useAos();
   const services = [
     {
       id: "frontend-development",
@@ -82,17 +85,29 @@ export default function ServicesAccordion() {
     >
       <div className="container px-4 md:px-6 flex flex-col items-center">
         <div className="text-center mb-12 max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+          <h2
+            className="text-3xl md:text-4xl font-bold mb-4 text-white"
+            data-aos="zoom-in"
+            data-aos-duration="900"
+          >
             Web <span className="text-blue-500">Development Services</span>
           </h2>
-          <div className="w-16 h-1 bg-blue-500 mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-300">
+          <div
+            className="w-16 h-1 bg-blue-500 mx-auto rounded-full mb-6"
+            data-aos="fade-up"
+            data-aos-duration="200"
+          ></div>
+          <p className="text-gray-300" data-aos="fade-up">
             Discover our comprehensive web development expertise to bring your
             digital vision to life
           </p>
         </div>
 
-        <div className="w-full max-w-6xl mx-auto">
+        <div
+          className="w-full max-w-6xl mx-auto"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
           <Accordion type="single" collapsible className="w-full">
             {services.map((service) => (
               <AccordionItem
