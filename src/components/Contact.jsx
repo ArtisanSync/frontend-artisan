@@ -209,7 +209,7 @@ export default function Contact() {
 
           <div
             className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10"
-            data-aos="fade-left"
+            data-aos="fade-up"
             data-aos-duration="700"
           >
             <h2 className="text-2xl font-bold mb-6 text-white">
