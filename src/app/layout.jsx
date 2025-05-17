@@ -15,6 +15,15 @@ export const metadata = {
     "We are a team of professional software developers dedicated to delivering the best digital solutions for your business website and applications.",
   keywords:
     "software development, web development, mobile app, digital solutions, responsive websites, professional developers, Indonesia",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    shortcut: ["/favicon.ico"],
+  },
   openGraph: {
     title: "Artisan Sync | Professional Software Development Services",
     description:
