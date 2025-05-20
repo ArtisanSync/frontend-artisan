@@ -6,6 +6,7 @@ import ServicesAccordion from "@/components/ServicesAccordion";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import Contact from "@/components/Contact";
 import Script from "next/script";
+import MarqueeTechStack from "@/components/MarqueeTechStack";
 
 export const metadata = {
   title: "Artisan Sync | Professional Software Development Services",
@@ -66,6 +67,7 @@ const Home = () => {
       <FounderSection />
       <Service />
       <ProjectCarousel />
+      <MarqueeTechStack />
       <div className="p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <TeamSection />
       </div>
