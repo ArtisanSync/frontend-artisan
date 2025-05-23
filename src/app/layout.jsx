@@ -1,4 +1,5 @@
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import NavbarFooterWrapper from "@/components/NavbarFooterWrapper";
 import { Providers } from "@/providers/Providers";
@@ -58,6 +59,18 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3Z7JB9TG7L"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3Z7JB9TG7L');
+          `}
+        </Script>
       </head>
       <body
         className={`${poppins.variable} antialiased min-h-screen flex flex-col bg-[#10101E]`}
