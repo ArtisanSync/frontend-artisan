@@ -300,13 +300,26 @@ export default function Contact() {
                     <FormItem className="min-h-[180px] relative">
                       <FormLabel className="text-gray-200">Message</FormLabel>
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative w-full">
                           <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                           <Textarea
                             placeholder="Type your message here..."
-                            className="pl-10 bg-black/30 border-white/10 text-white min-h-[120px] resize-none"
+                            className="pl-10 bg-black/30 border-white/10 text-white min-h-[120px] h-auto resize-none w-full overflow-y-auto"
+                            style={{
+                              wordBreak: "break-word",
+                              maxWidth: "100%",
+                              whiteSpace: "pre-wrap",
+                            }}
                             autoComplete="off"
                             {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              e.target.style.height = "120px";
+                              e.target.style.height = `${Math.max(
+                                e.target.scrollHeight,
+                                120
+                              )}px`;
+                            }}
                           />
                         </div>
                       </FormControl>
