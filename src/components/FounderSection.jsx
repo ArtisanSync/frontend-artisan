@@ -4,7 +4,6 @@ import Image from "next/image";
 import { images } from "@/constants/images";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Award, Briefcase, GraduationCap } from "lucide-react";
-import useAos from "@/hooks/use-aos";
 
 const FounderSection = () => {
   return (

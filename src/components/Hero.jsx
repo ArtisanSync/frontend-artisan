@@ -2,8 +2,8 @@
 
 import { InteractiveHoverButton } from "./magicui/interactive-hover-button";
 import Image from "next/image";
-import LeftBanner from "../../public/left-banner.svg";
-import RightBanner from "../../public/right-banner.svg";
+import LeftBanner from "../../public/left-banner.webp";
+import RightBanner from "../../public/right-banner.webp";
 import useAos from "../hooks/use-aos";
 import UseTypeIt from "@/hooks/use-typeit";
 
