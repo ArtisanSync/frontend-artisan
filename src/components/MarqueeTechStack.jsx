@@ -19,7 +19,7 @@ export default function MarqueeTechStack() {
         </p>
       </div>
       <div className="mt-4 py-8 " data-aos="zoom-in" data-aos-duration="900">
-        <Marquee autoFill speed={70} delay={1}>
+        <Marquee autoFill speed={40} delay={1}>
           {techStackLogo.map((logo, index) => (
             <div
               key={index}
