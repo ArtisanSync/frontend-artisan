@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./ui/button";
+import { InteractiveHoverButton } from "./magicui/interactive-hover-button";
 import Image from "next/image";
 import LeftBanner from "../../public/left-banner.svg";
 import RightBanner from "../../public/right-banner.svg";
@@ -66,15 +66,15 @@ function Hero() {
             we translate your vision into high-quality digital products.
           </p>
 
-          <Button
-            className="bg-[#CEE0FD] w-full min-w-[180px] md:w-auto md:h-[43px] text-black hover:bg-blue-600 hover:text-white"
+          <InteractiveHoverButton
+            className="bg-[#CEE0FD] w-full min-w-[180px] md:w-auto md:h-[43px] text-black hover:text-white"
             onClick={handleScrollToContact}
             data-aos="fade-up"
             data-aos-duration="1000"
             data-aos-delay="200"
           >
             Let's Work Together
-          </Button>
+          </InteractiveHoverButton>
         </div>
       </div>
     </section>

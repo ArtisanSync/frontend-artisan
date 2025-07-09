@@ -37,8 +37,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
 import useAos from "@/hooks/use-aos";
+import { ShineBorder } from "@/components/magicui/shine-border";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -207,148 +207,149 @@ export default function Contact() {
             </div>
           </div>
 
-          <div
-            className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10"
-            data-aos="fade-up"
-            data-aos-duration="700"
-          >
-            <h2 className="text-2xl font-bold mb-6 text-white">
-              Send Us a Message
-            </h2>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5"
-                autoComplete="off"
-              >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem className="min-h-[90px] relative">
-                      <FormLabel className="text-gray-200">Full Name</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Input
-                            placeholder="Enter your name"
-                            className="pl-10 bg-black/30 border-white/10 text-white"
-                            autoComplete="off"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <div className="h-5 mt-1">
-                        <FormMessage className="text-red-400 text-xs" />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="min-h-[90px] relative">
-                      <FormLabel className="text-gray-200">
-                        Email Address
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Input
-                            placeholder="Enter your email"
-                            type="email"
-                            className="pl-10 bg-black/30 border-white/10 text-white"
-                            autoComplete="off"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <div className="h-5 mt-1">
-                        <FormMessage className="text-red-400 text-xs" />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="subject"
-                  render={({ field }) => (
-                    <FormItem className="min-h-[90px] relative">
-                      <FormLabel className="text-gray-200">Subject</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your subject"
-                          className="bg-black/30 border-white/10 text-white"
-                          autoComplete="off"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="h-5 mt-1">
-                        <FormMessage className="text-red-400 text-xs" />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem className="min-h-[180px] relative">
-                      <FormLabel className="text-gray-200">Message</FormLabel>
-                      <FormControl>
-                        <div className="relative w-full">
-                          <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Textarea
-                            placeholder="Type your message here..."
-                            className="pl-10 bg-black/30 border-white/10 text-white min-h-[120px] h-auto resize-none w-full overflow-y-auto"
-                            style={{
-                              wordBreak: "break-word",
-                              maxWidth: "100%",
-                              whiteSpace: "pre-wrap",
-                            }}
-                            autoComplete="off"
-                            {...field}
-                            onChange={(e) => {
-                              field.onChange(e);
-                              e.target.style.height = "120px";
-                              e.target.style.height = `${Math.max(
-                                e.target.scrollHeight,
-                                120
-                              )}px`;
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                      <div className="h-5 mt-1">
-                        <FormMessage className="text-red-400 text-xs" />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                  disabled={contactMutation.isPending}
+          <div className="relative" data-aos="fade-up" data-aos-duration="700">
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 relative overflow-hidden">
+              <ShineBorder borderWidth={2} duration={8} shineColor="#2563eb" />
+              <h2 className="text-2xl font-bold mb-6 text-white">
+                Send Us a Message
+              </h2>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-5"
+                  autoComplete="off"
                 >
-                  {contactMutation.isPending ? (
-                    <div className="flex items-center gap-2">
-                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-                      <span>Sending...</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <Send className="h-4 w-4" />
-                      <span>Send Message</span>
-                    </div>
-                  )}
-                </Button>
-              </form>
-            </Form>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[90px] relative">
+                        <FormLabel className="text-gray-200">
+                          Full Name
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              placeholder="Enter your name"
+                              className="pl-10 bg-black/30 border-white/10 text-white"
+                              autoComplete="off"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[90px] relative">
+                        <FormLabel className="text-gray-200">
+                          Email Address
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              placeholder="Enter your email"
+                              type="email"
+                              className="pl-10 bg-black/30 border-white/10 text-white"
+                              autoComplete="off"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[90px] relative">
+                        <FormLabel className="text-gray-200">Subject</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your subject"
+                            className="bg-black/30 border-white/10 text-white"
+                            autoComplete="off"
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem className="min-h-[180px] relative">
+                        <FormLabel className="text-gray-200">Message</FormLabel>
+                        <FormControl>
+                          <div className="relative w-full">
+                            <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Textarea
+                              placeholder="Type your message here..."
+                              className="pl-10 bg-black/30 border-white/10 text-white min-h-[120px] h-auto resize-none w-full overflow-y-auto"
+                              style={{
+                                wordBreak: "break-word",
+                                maxWidth: "100%",
+                                whiteSpace: "pre-wrap",
+                              }}
+                              autoComplete="off"
+                              {...field}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                e.target.style.height = "120px";
+                                e.target.style.height = `${Math.max(
+                                  e.target.scrollHeight,
+                                  120
+                                )}px`;
+                              }}
+                            />
+                          </div>
+                        </FormControl>
+                        <div className="h-5 mt-1">
+                          <FormMessage className="text-red-400 text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    disabled={contactMutation.isPending}
+                  >
+                    {contactMutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Send className="h-4 w-4" />
+                        <span>Send Message</span>
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </div>
           </div>
         </div>
       </div>
