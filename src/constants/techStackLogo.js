@@ -1,17 +1,17 @@
-import dockerLogo from "../../public/images/marquee-logo/docker.png";
-import expressLogo from "../../public/images/marquee-logo/express.png";
-import figma from "../../public/images/marquee-logo/figma.png";
-import googleCloud from "../../public/images/marquee-logo/google-cloud.png";
-import javascript from "../../public/images/marquee-logo/javascript.png";
-import jira from "../../public/images/marquee-logo/jira.png";
-import mongoDb from "../../public/images/marquee-logo/mongo-db.png";
-import nextJs from "../../public/images/marquee-logo/next-js.png";
-import postgres from "../../public/images/marquee-logo/postgres-sql.png";
-import postman from "../../public/images/marquee-logo/postman.png";
-import prisma from "../../public/images/marquee-logo/prisma.png";
-import react from "../../public/images/marquee-logo/react.png";
-import redux from "../../public/images/marquee-logo/redux.png";
-import vite from "../../public/images/marquee-logo/vite.png";
+import dockerLogo from "../../public/images/marquee-logo/docker.webp";
+import expressLogo from "../../public/images/marquee-logo/express.webp";
+import figma from "../../public/images/marquee-logo/figma.webp";
+import googleCloud from "../../public/images/marquee-logo/google-cloud.webp";
+import javascript from "../../public/images/marquee-logo/javascript.webp";
+import jira from "../../public/images/marquee-logo/jira.webp";
+import mongoDb from "../../public/images/marquee-logo/mongo-db.webp";
+import nextJs from "../../public/images/marquee-logo/next-js.webp";
+import postgres from "../../public/images/marquee-logo/postgres-sql.webp";
+import postman from "../../public/images/marquee-logo/postman.webp";
+import prisma from "../../public/images/marquee-logo/prisma.webp";
+import react from "../../public/images/marquee-logo/react.webp";
+import redux from "../../public/images/marquee-logo/redux.webp";
+import vite from "../../public/images/marquee-logo/vite.webp";
 
 export const techStackLogo = [
   {
