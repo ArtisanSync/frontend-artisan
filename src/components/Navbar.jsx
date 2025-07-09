@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import artisanSyncLogo from "../../public/artisan-logo.svg";
+import { images } from "@/constants/images";
 import { Button } from "../components/ui/button";
 import {
   Sheet,
@@ -75,7 +75,7 @@ function Navbar() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative overflow-hidden rounded-full p-2">
             <Image
-              src={artisanSyncLogo}
+              src={images.artisanSyncLogo}
               alt="Artisan Sync Logo"
               width={40}
               height={40}
@@ -131,7 +131,7 @@ function Navbar() {
             <div className="flex justify-between p-4 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <Image
-                  src={artisanSyncLogo}
+                  src={images.artisanSyncLogo}
                   alt="Artisan Sync Logo"
                   width={32}
                   height={32}

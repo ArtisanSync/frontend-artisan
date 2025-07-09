@@ -1,11 +1,11 @@
-import { Poppins } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import NavbarFooterWrapper from "@/components/NavbarFooterWrapper";
 import { Providers } from "@/providers/Providers";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
@@ -73,7 +73,7 @@ export default function RootLayout({ children }) {
         </Script>
       </head>
       <body
-        className={`${poppins.variable} antialiased min-h-screen flex flex-col bg-[#10101E]`}
+        className={`${montserrat.variable} antialiased min-h-screen flex flex-col bg-[#10101E]`}
       >
         <Providers>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>

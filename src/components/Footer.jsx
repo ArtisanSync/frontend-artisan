@@ -24,26 +24,21 @@ function Footer() {
     <footer className="bg-[#000000]">
       <div className="px-4 py-10 md:py-16">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-between">
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="size-10 p-1.5 rounded-md flex items-center justify-center">
-                <Image
-                  src={images.artisanSyncLogo}
-                  alt="Artisan Sync Logo"
-                  width={50}
-                  height={50}
-                  className="object-contain"
-                />
-              </div>
-              <span className="font-bold text-xl tracking-tight text-white">
-                ArtisanSync
-              </span>
+          <div className="md:col-span-1 flex flex-col items-start">
+            <div className="mb-6">
+              <Image
+                src={images.artisanFooter}
+                alt="Artisan Sync Footer Logo"
+                width={120}
+                height={120}
+                className="object-contain"
+                priority
+              />
             </div>
             <p className="text-sm max-w-xs text-gray-300 leading-relaxed">
               Transforming ideas into exceptional digital experiences with
               precision and artistry.
             </p>
-
             <div className="flex space-x-4 mt-6">
               <Link
                 href="https://www.instagram.com/artisan_sync/"
@@ -99,7 +94,6 @@ function Footer() {
                   Project
                 </button>
               </li>
-
               <li>
                 <button
                   onClick={() => scrollToSection("team")}
