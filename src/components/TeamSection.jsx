@@ -8,6 +8,7 @@ import { AlertCircle, Link } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaLinkedin } from "react-icons/fa";
 import useAos from "@/hooks/use-aos";
+import { ShineBorder } from "@/components/magicui/shine-border";
 
 const TeamSection = () => {
   useAos();
@@ -52,10 +53,17 @@ const TeamSection = () => {
             {[1, 2, 3, 4].map((item) => (
               <Card
                 key={item}
-                className="overflow-hidden border-none shadow-lg rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
+                className="overflow-hidden border-none shadow-lg rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0 relative"
               >
+                <ShineBorder
+                  borderWidth={2}
+                  duration={8}
+                  shineColor="#2563eb"
+                />
                 <div className="flex flex-col h-full">
-                  <Skeleton className="aspect-square w-full h-full rounded-t-2xl" />
+                  <div className="w-full px-6 pt-6 pb-0">
+                    <Skeleton className="aspect-square w-full rounded-2xl" />
+                  </div>
                   <CardContent className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#161630] rounded-b-2xl">
                     <div>
                       <Skeleton className="h-8 w-3/4 rounded-md mb-2" />
@@ -93,9 +101,7 @@ const TeamSection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
             {teamMembers.map((member) => {
               let linkedinUrl = "";
-
-              // Hardcode berdasarkan nama atau ID
-              https: if (member.name === "Naufal Annafi")
+              if (member.name === "Naufal Annafi")
                 linkedinUrl =
                   "https://www.linkedin.com/in/naufal-annafi-bb623935b/";
               if (member.name === "Wahyu Hary Saputra Sembiring")
@@ -115,20 +121,29 @@ const TeamSection = () => {
               return (
                 <Card
                   key={member._id}
-                  className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0"
+                  className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl backdrop-blur-sm bg-[#161630]/80 py-0 relative"
                 >
+                  <ShineBorder
+                    borderWidth={2}
+                    duration={8}
+                    shineColor="#2563eb"
+                    className="rounded-2xl absolute inset-0 pointer-events-none z-10"
+                    style={{ zIndex: 2 }}
+                  />
                   <div className="flex flex-col h-full">
-                    <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl hover:scale-105 lg:hover:scale-110 transition-transform duration-700 ">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
-                      <Image
-                        src={member.photo}
-                        alt={member.name}
-                        fill
-                        className="object-cover rounded-t-2xl"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        priority
-                      />
-                      <div className="absolute bottom-4 left-4 z-20">
+                    <div className="w-full px-5 pt-5 pb-0 relative">
+                      <div className="absolute inset-0 z-10 rounded-2xl"></div>
+                      <div className="relative aspect-square w-full">
+                        <Image
+                          src={member.photo}
+                          alt={member.name}
+                          fill
+                          className="object-cover rounded-lg"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          priority
+                        />
+                      </div>
+                      <div className="absolute bottom-4 left-10 z-20">
                         <Badge className="bg-primary/80 text-white text-xs font-medium py-1 px-2.5">
                           {member.title}
                         </Badge>
